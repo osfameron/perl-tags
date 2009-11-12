@@ -1,5 +1,7 @@
 Revision history for Perl-Tags
 
+        Do not parse example code in POD (DMITRI).
+
 0.26    2008-08-07
         Bruno Vecchi pointed out the example perl.vim doesn't work:
             Added comment about 'EOF'
