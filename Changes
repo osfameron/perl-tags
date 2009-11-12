@@ -1,6 +1,5 @@
 Revision history for Perl-Tags
 
-        Fix Perl::Tags::PPI to work with current versions of PPI.
         Do not parse example code in POD (DMITRI).
         Now comes with a super-simple command line interface.
 

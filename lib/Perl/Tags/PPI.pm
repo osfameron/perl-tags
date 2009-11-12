@@ -9,11 +9,7 @@ use PPI;
 sub ppi_all {
     my ( $self, $file ) = @_;
 
-    my $doc;
-    {
-      my $code = do {open my $fh, '<', $file or die $!; local $/ = undef; <$fh>};
-      my $doc = PPI::Document->new(\$code) || return();
-    }
+    my $doc = PPI::Document->new($file) || return;
 
     $doc->index_locations;
 
