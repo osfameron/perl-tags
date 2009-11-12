@@ -12,6 +12,7 @@ requires        'File::Spec';
 requires        'File::Temp';
 requires        'Module::Locate';
 build_requires  'Test::More' => 0.42;
+build_requires  'Data::Dumper';
 
 recommends      'PPI';
 
