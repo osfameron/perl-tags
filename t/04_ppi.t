@@ -23,9 +23,9 @@ SKIP: {
         );
     ok ($result, 'processed successfully' ) or diag "RESULT $result";
 
-    like ($ppi_tagger, qr{Test\t\S+/Test.pm\t/package Test;/}       , 'package line');
-    like ($ppi_tagger, qr{\$?bar\t\S+/Test.pm\t/my \(\\?\$foo, \\?\$bar\);/} , 'variable 1');
-    like ($ppi_tagger, qr{\$?foo\t\S+/Test.pm\t/my \(\\?\$foo, \\?\$bar\);/} , 'variable 2');
-    like ($ppi_tagger, qr{wibble\t\S+/Test.pm\t/sub wibble \{/}     , 'subroutine');
+    like ($ppi_tagger, qr{Test\t\S+[\\/]Test.pm\t/package Test;/}       , 'package line');
+    like ($ppi_tagger, qr{\$?bar\t\S+[\\/]Test.pm\t/my \(\\?\$foo, \\?\$bar\);/} , 'variable 1');
+    like ($ppi_tagger, qr{\$?foo\t\S+[\\/]Test.pm\t/my \(\\?\$foo, \\?\$bar\);/} , 'variable 2');
+    like ($ppi_tagger, qr{wibble\t\S+[\\/]Test.pm\t/sub wibble \{/}     , 'subroutine');
 
 }

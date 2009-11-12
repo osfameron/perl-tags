@@ -21,7 +21,7 @@ my $result =
     );
 ok ($result, 'processed successfully' ) or diag "RESULT $result";
 
-like ($naive_tagger, qr{Test\t\S+/Test.pm\t/package Test;/}       , 'package line');
-like ($naive_tagger, qr{bar\t\S+/Test.pm\t/my \(\$foo, \$bar\);/} , 'variable 1');
-like ($naive_tagger, qr{foo\t\S+/Test.pm\t/my \(\$foo, \$bar\);/} , 'variable 2');
-like ($naive_tagger, qr{wibble\t\S+/Test.pm\t/sub wibble \{/}     , 'subroutine');
+like ($naive_tagger, qr{Test\t\S+[\\/]Test.pm\t/package Test;/}       , 'package line');
+like ($naive_tagger, qr{bar\t\S+[\\/]Test.pm\t/my \(\$foo, \$bar\);/} , 'variable 1');
+like ($naive_tagger, qr{foo\t\S+[\\/]Test.pm\t/my \(\$foo, \$bar\);/} , 'variable 2');
+like ($naive_tagger, qr{wibble\t\S+[\\/]Test.pm\t/sub wibble \{/}     , 'subroutine');

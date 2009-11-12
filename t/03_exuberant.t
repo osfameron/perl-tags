@@ -25,8 +25,8 @@ my $result =
     );
 ok ($result, 'processed successfully' ) or diag "RESULT $result";
 
-like ($naive_tagger, qr{Test\t\S+/Test.pm\t/package Test;/;"\tp\tline:3\tclass:Test}       , 'package line');
-like ($naive_tagger, qr{bar\t\S+/Test.pm\t/my \(\$foo, \$bar\);/;"\tv\tline:8\tfile:\tclass:Test} , 'variable 1');
-like ($naive_tagger, qr{foo\t\S+/Test.pm\t/my \(\$foo, \$bar\);/;"\tv\tline:8\tfile:\tclass:Test} , 'variable 2');
-like ($naive_tagger, qr{wibble\t\S+/Test.pm\t/sub wibble \{/;"\ts\tline:10\tclass:Test}     , 'subroutine');
+like ($naive_tagger, qr{Test\t\S+[\\/]Test.pm\t/package Test;/;"\tp\tline:3\tclass:Test}       , 'package line');
+like ($naive_tagger, qr{bar\t\S+[\\/]Test.pm\t/my \(\$foo, \$bar\);/;"\tv\tline:8\tfile:\tclass:Test} , 'variable 1');
+like ($naive_tagger, qr{foo\t\S+[\\/]Test.pm\t/my \(\$foo, \$bar\);/;"\tv\tline:8\tfile:\tclass:Test} , 'variable 2');
+like ($naive_tagger, qr{wibble\t\S+[\\/]Test.pm\t/sub wibble \{/;"\ts\tline:10\tclass:Test}     , 'subroutine');
 
