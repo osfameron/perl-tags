@@ -15,6 +15,8 @@ requires        'Module::Locate';
 build_requires  'Test::More' => 0.42;
 build_requires  'Data::Dumper';
 
+install_script  'bin/perl-tags'
+
 recommends      'PPI';
 
 auto_install;
