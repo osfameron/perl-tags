@@ -11,9 +11,9 @@ use Perl::Tags::Naive::Spiffy;
 
 our @ISA = qw(
   Perl::Tags::Naive
-  Perl::Tags::PPI
   Perl::Tags::Naive::Lib
   Perl::Tags::Naive::Spiffy
+  Perl::Tags::PPI
 );
 
 {
