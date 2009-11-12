@@ -34,75 +34,75 @@ sub get_parsers {
 sub _tagify {
     my ( $self, $thing, $file ) = @_;
 
-	my $class = $thing->class;
+    my $class = $thing->class;
 
-	my ( $first_line ) = split /\n/, $thing;
+    my ( $first_line ) = split /\n/, $thing;
 
-	if ( my ( $subtype ) = ( $class =~ /^PPI::Statement::(.*)$/ ) ) {
+    if ( my ( $subtype ) = ( $class =~ /^PPI::Statement::(.*)$/ ) ) {
 
-		my $method = "_tagify_" . lc($subtype);
+        my $method = "_tagify_" . lc($subtype);
 
-		if ( $self->can($method) ) {
-			return $self->$method( $thing, $file, $first_line );
-		}
-	}
+        if ( $self->can($method) ) {
+            return $self->$method( $thing, $file, $first_line );
+        }
+    }
 
-	return $self->_tagify_statement($thing, $file, $first_line);
+    return $self->_tagify_statement($thing, $file, $first_line);
 }
 
 # catch all
 sub _tagify_statement {
-	my ( $self, $thing, $file, $first_line ) = @_;
+    my ( $self, $thing, $file, $first_line ) = @_;
 
-	return;
+    return;
 }
 
 sub _tagify_sub {
     my ( $self, $thing, $file, $line ) = @_;
 
-	return Perl::Tags::Tag::Sub->new(
-		name    => $thing->name,
-		file    => $file,
-		line    => $line,
-		linenum => $thing->location->[0],
-		pkg     => $thing->guess_package
-	);
+    return Perl::Tags::Tag::Sub->new(
+        name    => $thing->name,
+        file    => $file,
+        line    => $line,
+        linenum => $thing->location->[0],
+        pkg     => $thing->guess_package
+    );
 }
 
 sub _tagify_variable {
     my ( $self, $thing, $file, $line ) = @_;
-	return map {
-		Perl::Tags::Tag::Var->new(
-			name    => $_,
-			file    => $file,
-			line    => $line,
-			linenum => $thing->location->[0],
-		  )
-	} $thing->variables;
+    return map {
+        Perl::Tags::Tag::Var->new(
+            name    => $_,
+            file    => $file,
+            line    => $line,
+            linenum => $thing->location->[0],
+          )
+    } $thing->variables;
 }
 
 sub _tagify_package {
     my ( $self, $thing, $file, $line ) = @_;
 
-	return Perl::Tags::Tag::Package->new(
-		name    => $thing->namespace,
-		file    => $file,
-		line    => $line,
-		linenum => $thing->location->[0],
-	);
+    return Perl::Tags::Tag::Package->new(
+        name    => $thing->namespace,
+        file    => $file,
+        line    => $line,
+        linenum => $thing->location->[0],
+    );
 }
 
 sub _tagify_include {
     my ( $self, $thing, $file ) = @_;
 
-	if ( my $module = $thing->module ) {
-		return Perl::Tags::Tag::Recurse->new(
-			name    => $module,
-			line    => "dummy",
-		);
-	}
+    if ( my $module = $thing->module ) {
+        return Perl::Tags::Tag::Recurse->new(
+            name    => $module,
+            line    => "dummy",
+        );
+    }
 
-	return;
+    return;
 }
 
 sub PPI::Statement::Sub::guess_package {
@@ -121,7 +121,7 @@ sub PPI::Statement::Sub::guess_package {
         }
     }
 
-	return $package;
+    return $package;
 }
 
 =head1 NAME
