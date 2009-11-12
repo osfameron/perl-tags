@@ -40,7 +40,4 @@ added patch 26842 by Ian Tegebo" <ian.tegebo@gmail.com> (tempname)
 added patch 20613 (DMITRI@cpan.org) for parsing use constant declarations
 added patch 20616 (DMITRI@cpan.org) for parsing label declarations
 
-TODO
-add patch 20608 (DMITRI@cpan.org) for pod parsing
-
 - move ::Naive to another module
