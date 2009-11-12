@@ -100,6 +100,19 @@ use File::Spec;
 use overload q("") => \&to_string;
 our $VERSION = 0.26;
 
+{
+    # Tags that start POD:
+    my @start_tags = qw(pod head1 head2 head3 head4 over item back begin
+                        end for encoding);
+    my @end_tags = qw(cut);
+
+    my $startpod = '^=(?:' . join('|', @start_tags) . ')\b';
+    my $endpod = '^=(?:' . join('|', @end_tags) . ')\b';
+
+    sub STARTPOD { qr/$startpod/ }
+    sub ENDPOD { qr/$endpod/ }
+}
+
 =head2 C<new>
 
 L<Perl::Tags> is an abstract baseclass.  L<Perl::Tags::Naive> is provided
@@ -302,8 +315,11 @@ sub process_file {
 
     # default line by line parsing.  Or override it
 
+    my $start = STARTPOD;
+    my $end = ENDPOD;
 
     while (<$IN>) {
+        next if (/$start/o .. /$end/o);     # Skip over POD.
         chomp;
         my $statement = my $line = $_;
         PARSELOOP: for my $parser (@parsers) {
