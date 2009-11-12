@@ -35,23 +35,23 @@ our $VERSION = '0.01';
 
   perl-tags version 0.01. Copyright 2009, Steffen Mueller
   
-  Usage: perl-tags <options> <input files...>
+  Usage: perl-tags <options> <input files or dirs...>
   Generates "perltags" files for use with your editor of choice.
   
   Options:
   -o/--outfile   Set the path/name of the output file (default: perltags)
-  -r/--recursive Scan the provided arguments recursively
-                 (<input files> may include directories)
+  -d/--depth     Set the max recursion depth (recursion into "use Module", etc)
+                 (default: 100 (~ infinity))
 
 =cut
 
 our $Outfile = 'perltags';
-our $Recursive;
+our $RecursionDepth = 100;
 # more control is TODO
 Getopt::Long::GetOptions(
   'h|help'      => sub {pod2usage();},
   'o|outfile=s' => \$Outfile,
-  'r|recursive' => \$Recursive,
+  'd|depth=i'   => \$RecursionDepth,
 );
 
 pod2usage() unless @ARGV;
@@ -61,20 +61,15 @@ exit();
 
 sub main {
   my $ptag = App::Perl::Tags::Tagger->new(
-    max_level => 100, # TODO make configurable
+    max_level => $RecursionDepth,
     exts      => 1,
   );
 
   my @files;
-  if ($Recursive) {
-    File::Find::find(
-      sub { push @files, $File::Find::name if -f $_ },
-      @ARGV
-    );
-  }
-  else {
-    @files = @ARGV;
-  }
+  File::Find::find(
+    sub { push @files, $File::Find::name if -f $_ },
+    @ARGV
+  );
 
   $ptag->process(files => \@files);
   $ptag->output(outfile => $Outfile); 
