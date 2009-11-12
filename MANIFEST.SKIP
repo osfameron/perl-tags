@@ -27,3 +27,6 @@
 \b\..*\.sw[op]$
 
 \.gitignore
+
+# skip releases
+Perl-Tags-.*\.tar\.gz$
