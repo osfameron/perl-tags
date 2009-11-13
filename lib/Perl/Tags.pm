@@ -351,7 +351,7 @@ sub process_file {
     }
 
     if (defined $ppi_parser) {
-        my @tags = $parser->( $self, $file );
+        my @tags = $ppi_parser->( $self, $file );
         $self->register( $file, @tags );
     }
 }
