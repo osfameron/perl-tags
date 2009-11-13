@@ -98,7 +98,7 @@ use Data::Dumper;
 use File::Spec;
 
 use overload q("") => \&to_string;
-our $VERSION = 0.26;
+our $VERSION = 0.27;
 
 {
     # Tags that start POD:
@@ -863,8 +863,11 @@ sub on_register {
 
 =head1 CONTRIBUTIONS
 
-(Apologies if I've missed anyone out -- I'm working on notes from... oops...
-a couple of years ago.  Huge thanks!)
+Contributions are always welcome.  The repo is in git:
+
+    http://github.com/osfameron/perl-tags
+
+Please fork and make pull request.  Maint bits available on request.
 
 =over 4
 
@@ -890,16 +893,20 @@ prodding me to make repo public
 
 =item nothingmuch
 
-::PPI fixes, pestering me to release again
+::PPI fixes
+
+=item tsee
+
+Command line interface, applying patches
 
 =back
 
 =head1 AUTHOR and LICENSE
 
-    osfameron (2006-2008) - osfameron@gmail.com
+    osfameron (2006-2009) - osfameron@cpan.org
+                            and contributors, as above
 
 For support, try emailing me or grabbing me on irc #london.pm on irc.perl.org
-Offers to co-maintain this module are very welcome!
 
 This was originally ripped off pltags.pl, as distributed with vim
 and available from L<http://www.mscha.com/mscha.html?pltags#tools>

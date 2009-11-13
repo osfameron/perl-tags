@@ -1,7 +1,9 @@
 Revision history for Perl-Tags
 
+0.27
+
         Do not parse example code in POD (DMITRI).
-        Now comes with a super-simple command line interface.
+        Now comes with a super-simple command line interface. (tsee)
 
 0.26    2008-08-07
         Bruno Vecchi pointed out the example perl.vim doesn't work:

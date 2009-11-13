@@ -1,4 +1,4 @@
-Perl-Tags 0.2 - 3 Jul 2006
+Perl-Tags
 
 REFERENCES, HYPE, DISCUSSION
 
@@ -19,7 +19,7 @@ To install this module, run the following commands:
     perl Makefile.PL
     make
     make test
-    make install
+    make install  # or 'sudo make install'
 
 
 SUPPORT AND DOCUMENTATION
@@ -36,15 +36,9 @@ You can also look for information at:
     CPAN Request Tracker:
         http://rt.cpan.org/NoAuth/Bugs.html?Dist=Perl-Tags
 
-    AnnoCPAN, annotated CPAN documentation:
-        http://annocpan.org/dist/Perl-Tags
-
-    CPAN Ratings:
-        http://cpanratings.perl.org/d/Perl-Tags
-
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2006 osfameron
+Copyright (C) 2006-2009 osfameron and contributors
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.  (Or as Vim, if you prefer)
