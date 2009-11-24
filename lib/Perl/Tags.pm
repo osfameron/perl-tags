@@ -98,7 +98,7 @@ use Data::Dumper;
 use File::Spec;
 
 use overload q("") => \&to_string;
-our $VERSION = 0.27;
+our $VERSION = 0.28;
 
 {
     # Tags that start POD:

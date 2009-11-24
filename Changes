@@ -1,7 +1,9 @@
 Revision history for Perl-Tags
 
-0.27
+0.28    2009-11-24
+        Update MANIFEST (via tsee++)
 
+0.27    2009-11-13
         Do not parse example code in POD (DMITRI).
         Now comes with a super-simple command line interface. (tsee)
 
