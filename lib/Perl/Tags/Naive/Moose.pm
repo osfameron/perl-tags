@@ -1,5 +1,6 @@
 package Perl::Tags::Naive::Moose;
 
+use Perl::Tags;
 use base qw/Perl::Tags::Naive/;
 
 =head2 C<get_parsers>
@@ -58,7 +59,7 @@ Parse the declaration of a 'with' Moose keyword, returning a L<Perl::Tags::Tag::
 
 sub with_line {
     my ( $self, $line, $statement, $file ) = @_;
-    if ( $statement =~ =~ m/with\s+(:?qw.)?\W*(.+)\W*{/ ) {
+    if ( $statement =~ m/with\s+(?:qw.)?\W*(.+)\W*\{/ ) {
         my @roles = split /\W+|\W+with\W+/, $2;
         my @returns;
         foreach my $role (@roles) {
