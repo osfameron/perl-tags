@@ -653,7 +653,7 @@ sub on_register {
     my $name = $self->{name};
     my $path;
     eval {
-        $path = locate( $name ); # or warn "Couldn't find path for $module";
+        $path = locate( $name ); # or warn "Couldn't find path for $name";
     };
     # return if $@;
     return unless $path;

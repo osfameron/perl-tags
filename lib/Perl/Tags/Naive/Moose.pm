@@ -1,7 +1,7 @@
 package Perl::Tags::Naive::Moose;
 
 use Perl::Tags;
-use base qw/Perl::Tags::Naive/;
+use parent 'Perl::Tags::Naive';
 
 =head2 C<get_parsers>
 
@@ -38,15 +38,11 @@ Parse the declaration of a 'extends' Moose keyword, returning a L<Perl::Tags::Ta
 
 sub extends_line {
     my ($self, $line, $statement, $file) = @_;
-    if ($statement=~/extends\s+["']?(\w+)\b/) {
-        return (
-            Perl::Tags::Tag::Extends->new(
-                name => $1,
-                file => $file,
-                line => $line,
-                linenum => $.,
-            )
-        );
+    if ($statement=~/extends\s+["']?((?:\w+|::)+)\b/) {
+	return Perl::Tags::Tag::Recurse->new(
+	    name    => $1,
+	    line    => 'dummy',
+	);
     }
     return;
 }
@@ -59,15 +55,13 @@ Parse the declaration of a 'with' Moose keyword, returning a L<Perl::Tags::Tag::
 
 sub with_line {
     my ( $self, $line, $statement, $file ) = @_;
-    if ( $statement =~ m/with\s+(?:qw.)?\W*(.+)\W*\{/ ) {
-        my @roles = split /\W+|\W+with\W+/, $2;
+    if ( $statement =~ m/\bwith\s+(?:qw.)?\W*([a-zA-Z0-9_: ]+)/ ) {
+        my @roles = split /\s+/, $1;
         my @returns;
         foreach my $role (@roles) {
-            push @returns, Perl::Tags::Tag::With->new(
-			name    => $1,
-			file    => $file,
-			line    => $line,
-			linenum => $.,
+            push @returns, Perl::Tags::Tag::Recurse->new(
+		name    => $role,
+		line    => 'dummy',
             );
         }
         return @returns;
@@ -83,7 +77,7 @@ Parse the declaration of a 'has' Moose keyword, returning a L<Perl::Tags::Tag::H
 
 sub has_line {
     my ($self, $line, $statement, $file) = @_;
-    if ($statement=~/has\s+["'](\w+)\b/) {
+    if ($statement=~/\bhas\s+["']?(\w+)\b/) {
         return (
             Perl::Tags::Tag::Has->new(
                 name => $1,
