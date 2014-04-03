@@ -16,22 +16,49 @@ Perl::Tags - Generate (possibly exuberant) Ctags style tags for Perl sourcecode
 Recursively follows C<use> and C<require> statements, up to a maximum
 of C<max_level>.
 
-The implemented tagger, C<Perl::Tags::Naive> is a more-or-less straight
-ripoff, slightly updated, of the original pltags code, and is rather
-naive.  It should be possible to subclass using something like C<PPI>
-or C<Text::Balanced>, though be aware that this is alpha software and
-the internals are subject to change (so get in touch to let me know
-what you want to do and I'll try to help).
+See also L<bin/perl-tags> for a command-line script.
+
+=head1 USAGE
+
+There are several taggers distributed with this distribution, including:
+
+=over 4
+
+=item L<Perl::Tags::Naive> 
+
+This is a more-or-less straight ripoff, slightly updated, of the original
+pltags code.  This is a "naive" tagger, in that it makes pragmatic assumptions
+about what Perl code usually looks like (e.g. it doesn't actually parse the
+code.)  This is fast, lightweight, and often Good Enough.
+
+=item L<Perl::Tags::Naive::Lib>
+
+Also parse C<use lib> lines.
+
+=item L<Perl::Tags::PPI>
+
+Uses the L<PPI> module to do a deeper analysis and parsing of your Perl code.
+
+=item L<Perl::Tags::Naive::Moose>
+
+Parse L<Moose> declarations
+
+=back
 
 =head1 FEATURES
 
     * Recursive, incremental tagging.
     * parses `use_ok`/`require_ok` line from Test::More
 
-=head1 USING with VIM
+=head1 DEVELOPING WITH Perl::Tags
 
-C<Perl::Tags> is designed to be used with vim.  My C<~/.vim/ftplugin/perl.vim>
-contains the following:
+C<Perl::Tags> is designed to be integrated into your development
+environment.  Here are a few ways to use it:
+
+=head2 With Vim
+
+C<Perl::Tags> was originally designed to be used with vim.  My
+C<~/.vim/ftplugin/perl.vim> contains the following:
 
     setlocal iskeyword+=:  " make tags with :: in them useful
 
@@ -56,7 +83,8 @@ contains the following:
             my $tagsfile=VIM::Eval('s:tagsfile');
             VIM::SetOption("tags+=$tagsfile");
 
-            # of course, it may not even output, for example, if there's nothing new to process
+            # of course, it may not even output, for example, if there's
+            # nothing new to process
             $naive_tagger->output( outfile => $tagsfile );
     EOF
     endfunction
@@ -79,14 +107,20 @@ Note the following:
 
 =item *
 
-You will need to have a vim with perl compiled in it.  Debuntu packages this as C<vim-perl>.
-Alternatively you can compile from source (you'll need Perl + the development headers C<libperl-dev>).
+You will need to have a vim with perl compiled in it.  Debuntu packages this as
+C<vim-perl>. Alternatively you can compile from source (you'll need Perl + the
+development headers C<libperl-dev>).
 
 =item *
 
-The C<EOF> in the examples has to be at the beginning of the line (the verbatim text above has leading whitespace)
+The C<EOF> in the examples has to be at the beginning of the line (the verbatim
+text above has leading whitespace)
 
 =back
+
+=head2 From the Command Line
+
+See the L<bin/perl-tags> script provided.
 
 =head1 METHODS
 
@@ -115,8 +149,8 @@ our $VERSION = 0.28;
 
 =head2 C<new>
 
-L<Perl::Tags> is an abstract baseclass.  L<Perl::Tags::Naive> is provided
-and can be instantiated with C<new>.
+L<Perl::Tags> is an abstract baseclass.  Use a class such as 
+L<Perl::Tags::Naive> and instantiate it with C<new>.
 
     $naive_tagger = Perl::Tags::Naive->new( max_level=>2 );
 
@@ -142,7 +176,8 @@ sub new {
 
 =head2 C<to_string>
 
-A L<Perl::Tags> object will stringify to a textual representation of a ctags file.
+A L<Perl::Tags> object will stringify to a textual representation of a ctags
+file.
 
     print $tagger;
 
@@ -179,8 +214,8 @@ sub to_string {
 
 =head2 C<clean_file>
 
-Delete all tags, but without touching the "order" seen, that way, if the tags are recreated, they will remain near the top
-of the "interestingness" tree
+Delete all tags, but without touching the "order" seen, that way, if the tags
+are recreated, they will remain near the top of the "interestingness" tree
 
 =cut
 
@@ -278,11 +313,12 @@ sub process_item {
     my %options = @_;
     my $file  = $options{file} || die "No file passed to proces";
 
-    # make filename absolute, (this could become an option if appropriately refactored)
-    # but because of my usage (tags_$PID file in /tmp) I need the absolute path anyway,
-    # and it prevents the file being included twice under slightly different names
-    # (unless you have 2 hardlinked copies, as I do for my .vim/ directory... bah)
-    #
+    # make filename absolute, (this could become an option if appropriately
+    # refactored) but because of my usage (tags_$PID file in /tmp) I need the
+    # absolute path anyway, and it prevents the file being included twice under
+    # slightly different names (unless you have 2 hardlinked copies, as I do
+    # for my .vim/ directory... bah)
+
     $file = File::Spec->rel2abs( $file ) ;
 
     if ($self->{seen}{$file}++) {
@@ -316,6 +352,7 @@ sub process_file {
     # doesn't cooperate with any other parsers. This whole system
     # is flawed because you can't use several parsers together. But
     # I may be misunderstanding things. --Steffen
+
     my $ppi_parser;
     if (Perl::Tags::PPI->can('ppi_all')) {
         my $ppisub = Perl::Tags::PPI->can('ppi_all');
@@ -359,8 +396,8 @@ sub process_file {
 
 =head2 C<register>
 
-The parsing is done by a number of lightweight objects (parsers) which look
-for subroutine references, variables, module inclusion etc.  When they are
+The parsing is done by a number of lightweight objects (parsers) which look for
+subroutine references, variables, module inclusion etc.  When they are
 successful, they call the C<register> method in the main tags object.
 
 =cut
@@ -395,9 +432,10 @@ our @ISA = qw/Perl::Tags/;
 
 =head1 C<Perl::Tags::Naive>
 
-A naive implementation.  That is to say, it's based on the classic C<pltags.pl> script
-distributed with Perl, which is by and large a better bet than the results produced by
-C<ctags>.  But a "better" approach may be to integrate this with PPI.
+A naive implementation.  That is to say, it's based on the classic C<pltags.pl>
+script distributed with Perl, which is by and large a better bet than the
+results produced by C<ctags>.  But a "better" approach may be to integrate this
+with PPI.
 
 =head2 Subclassing
 
@@ -862,6 +900,10 @@ sub on_register {
 ##
 1;
 
+=head1 SEE ALSO
+
+L<bin/perl-tags>
+
 =head1 CONTRIBUTIONS
 
 Contributions are always welcome.  The repo is in git:
@@ -886,7 +928,7 @@ patch to parse constant and label declarations
 
 =item drbean
 
-::Naive::Spiffy and ::Naive::Lib subclasses
+::Naive::Moose, ::Naive::Spiffy and ::Naive::Lib subclasses
 
 =item Alias
 

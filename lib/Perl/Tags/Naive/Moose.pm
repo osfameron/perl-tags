@@ -392,14 +392,6 @@ sub type { 'Role' }
 =head1 AUTHOR and LICENSE
 
     dr bean - drbean at sign cpan a dot org
-    osfameron (2006) - osfameron@gmail.com
-
-For support, try emailing me or grabbing me on irc #london.pm on irc.perl.org
-
-This was originally ripped off pltags.pl, as distributed with vim
-and available from L<http://www.mscha.com/mscha.html?pltags#tools>
-Version 2.3, 28 February 2002
-Written by Michael Schaap <pltags@mscha.com>.
 
 This is licensed under the same terms as Perl itself.  (Or as Vim if you +prefer).
 
