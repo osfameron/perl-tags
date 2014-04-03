@@ -212,6 +212,7 @@ sub output {
     return unless $self->{is_dirty} || ! -e $outfile;
 
     open (my $OUT, '>', $outfile) or die "Couldn't open $outfile for write: $!";
+	binmode STDOUT, ":encoding(UTF-8)";
     print $OUT $self;
     close $OUT or die "Couldn't close $outfile for write: $!";
 
