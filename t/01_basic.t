@@ -2,12 +2,11 @@
 use strict; use warnings;
 use Data::Dumper;
 
-use Test::More tests => 9;
+use Test::More;
 use FindBin qw($Bin);
 
-BEGIN {
-  use_ok( 'Perl::Tags' );
-}
+use Perl::Tags;
+use Perl::Tags::Naive;
 
 my $naive_tagger = Perl::Tags::Naive->new( max_level=>1 );
 ok (defined $naive_tagger, 'created Perl::Tags' );
@@ -25,3 +24,5 @@ like ($naive_tagger, qr{Test\t\S+[\\/]Test.pm\t/package Test;/}       , 'package
 like ($naive_tagger, qr{bar\t\S+[\\/]Test.pm\t/my \(\$foo, \$bar\);/} , 'variable 1');
 like ($naive_tagger, qr{foo\t\S+[\\/]Test.pm\t/my \(\$foo, \$bar\);/} , 'variable 2');
 like ($naive_tagger, qr{wibble\t\S+[\\/]Test.pm\t/sub wibble \{/}     , 'subroutine');
+
+done_testing;

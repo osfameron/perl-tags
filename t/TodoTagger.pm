@@ -8,7 +8,7 @@ use strict; use warnings;
 use Data::Dumper;
 use lib qw( ../lib );
 use Perl::Tags;
-our @ISA = qw( Perl::Tags::Naive );
+use parent 'Perl::Tags::Naive';
 
 sub get_parsers {
     my $self = shift;

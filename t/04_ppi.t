@@ -6,8 +6,8 @@ use Test::More tests => 9;
 use FindBin qw($Bin);
 
 SKIP: {
-    eval { require 'PPI' };
-    skip "PPI not installed", 9 if $@;
+    eval 'use PPI';
+    skip "PPI not installed $@", 9 if $@;
 
     use_ok("Perl::Tags::PPI") or skip "Couldn't use Perl::Tags::PPI $@", 8;
 
