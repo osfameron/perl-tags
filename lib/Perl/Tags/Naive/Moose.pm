@@ -258,30 +258,6 @@ sub role_line {
     return;
 }
 
-=back
-
-=head1 C<Perl::Tags::Tag::Extends>
-
-=head2 C<type>: Extends
-
-=cut
-
-package Perl::Tags::Tag::Extends;
-our @ISA = qw/Perl::Tags::Tag/;
-
-sub type { 'Extends' }
-
-=head1 C<Perl::Tags::Tag::With>
-
-=head2 C<type>: With
-
-=cut
-
-package Perl::Tags::Tag::With;
-our @ISA = qw/Perl::Tags::Tag/;
-
-sub type { 'With' }
-
 =head1 C<Perl::Tags::Tag::Has>
 
 =head2 C<type>: Has
