@@ -3,38 +3,15 @@ use 5.006;
 use strict;
 use warnings;
 
-package App::Perl::Tags::Tagger;
-use Perl::Tags;
-use Perl::Tags::PPI;
-use Perl::Tags::Naive::Lib;
-use Perl::Tags::Naive::Spiffy;
-
-our @ISA = qw(
-  Perl::Tags::Naive
-  Perl::Tags::Naive::Lib
-  Perl::Tags::Naive::Spiffy
-  Perl::Tags::Naive::Moose
-);
-
-{
-  # no ISA changing after first call
-  my @parsers;
-  sub get_parsers {
-    my $self = shift;
-    if (!@parsers) {
-      foreach my $class (@ISA) {
-        eval "push \@parsers, \$self->${class}::get_parsers;";
-      }
-      @parsers = grep defined, @parsers;
-    }
-    return @parsers;
-  }
-}
-
 package App::Perl::Tags;
 use Getopt::Long ();
 use Pod::Usage qw/pod2usage/;
 use File::Find ();
+
+use Perl::Tags;
+use Perl::Tags::Hybrid;
+use Perl::Tags::PPI;
+use Perl::Tags::Naive::Moose; # includes ::Naive
 
 our $VERSION = '0.01';
 
@@ -72,10 +49,18 @@ main();
 exit();
 
 sub main {
-  my $ptag = App::Perl::Tags::Tagger->new(
+  my %opts = (
     max_level    => $RecursionDepth,
     exts         => 1,
     do_variables => $IndexVars,
+  );
+
+  my $ptag = Perl::Tags::Hybrid->new(
+    %opts,
+    taggers => [
+      Perl::Tags::Naive::Moose->new( %opts ),
+      Perl::Tags::PPI->new( %opts ),
+    ],
   );
 
   my @files;
