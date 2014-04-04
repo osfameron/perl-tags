@@ -302,10 +302,11 @@ sub popqueue {
     return pop @{$self->{queue}};
 }
 
-=head2 C<process_item>, C<process_file>
+=head2 C<process_item>, C<process_file>, C<get_tags_for_file>
 
-Do the heavy lifting for C<process> above.  Taggers I<must> override the
-abstract method C<process_file>.
+Do the heavy lifting for C<process> above.  
+
+Taggers I<must> override the abstract method C<get_tags_for_file>.
 
 =cut
 
@@ -345,7 +346,16 @@ sub process_item {
 }
 
 sub process_file {
-    die "Abstract method process_file called";
+    my ($self, $file) = @_;
+
+    my @tags = $self->get_tags_for_file( $file );
+
+    $self->register( $file, @tags );
+}
+
+sub get_tags_for_file {
+    use Carp 'confess';
+    confess "Abstract method get_tags_for_file called";
 }
 
 =head2 C<register>

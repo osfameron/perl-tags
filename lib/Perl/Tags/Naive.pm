@@ -38,7 +38,7 @@ in the ::Naive package, or use all of the existing parsers and add your own.
 Because ::Naive uses C<can('parser')> instead of C<\&parser>, you
 can just override a particular parser by redefining in the subclass. 
 
-=head2 C<process_file>
+=head2 C<get_tags_for_file>
 
 ::Naive uses a simple line-by-line analysis of Perl code, comparing
 each line against an array of parsers returned by the L<get_parsers> method.
@@ -48,7 +48,7 @@ tag/control to be registred by the tagger.
 
 =cut
 
-sub process_file {
+sub get_tags_for_file {
     my ($self, $file) = @_;
 
     my @parsers = $self->get_parsers(); # function refs
@@ -57,6 +57,8 @@ sub process_file {
 
     my $start = STARTPOD;
     my $end = ENDPOD;
+
+    my @all_tags;
 
     while (<$IN>) {
         next if (/$start/o .. /$end/o);     # Skip over POD.
@@ -69,9 +71,10 @@ sub process_file {
               $statement,
               $file 
             );
-            $self->register( $file, @tags );
+            push @all_tags, @tags;
         }
     }
+    return @all_tags;
 }
 
 =head2 C<get_parsers>

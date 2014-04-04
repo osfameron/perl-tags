@@ -17,12 +17,12 @@ sub ppi_all {
       @{ $doc->find(sub { $_[1]->isa("PPI::Statement") }) || [] }
 }
 
-sub process_file {
+sub get_tags_for_file {
     my ( $self, $file, @parsers ) = @_;
 
     my @tags = $self->ppi_all( $file );
 
-    $self->register( $file, @tags );
+    return @tags;
 }
 
 sub _tagify {
