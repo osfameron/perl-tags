@@ -16,7 +16,7 @@ in the ::Naive package, or use all of the existing parsers and add your own.
 
     package My::Tagger;
     use Perl::Tags;
-    our @ISA = qw( Perl::Tags::Naive );
+    use parent 'Perl::Tags::Naive';
 
     sub get_parsers {
         my $self = shift;

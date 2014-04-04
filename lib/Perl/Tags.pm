@@ -13,6 +13,8 @@ Perl::Tags - Generate (possibly exuberant) Ctags style tags for Perl sourcecode
             refresh=>1 
         );
 
+        print $naive_tagger; # stringifies to ctags file
+
 Recursively follows C<use> and C<require> statements, up to a maximum
 of C<max_level>.
 
@@ -31,19 +33,33 @@ pltags code.  This is a "naive" tagger, in that it makes pragmatic assumptions
 about what Perl code usually looks like (e.g. it doesn't actually parse the
 code.)  This is fast, lightweight, and often Good Enough.
 
-=item L<Perl::Tags::Naive::Lib>
-
-Also parse C<use lib> lines.
+This has additional subclasses such as L<Perl::Tags::Naive::Moose> to parse
+Moose declarations, and L<Perl::Tags::Naive::Lib> to parse C<use lib>.
 
 =item L<Perl::Tags::PPI>
 
 Uses the L<PPI> module to do a deeper analysis and parsing of your Perl code.
+This is more accurate, but slower.
 
-=item L<Perl::Tags::Naive::Moose>
+=item L<Perl::Tags::Hybrid>
 
-Parse L<Moose> declarations
+Can run multiple taggers, such as ::Naive and ::PPI, combining the results.
 
 =back
+
+=head1 EXTENDING
+
+Documentation patches are welcome: in the meantime, have a look at
+L<Perl::Tags::Naive> and its subclasses for a simple line-by-line method of
+tagging files.  Alternatively L<Perl::Tags::PPI> uses L<PPI>'s built in
+method of parsing Perl documents.
+
+In general, you will want to override the C<get_tags_for_file> method,
+returning a list of C<Perl::Tags::Tag> objects to be registered.
+
+For recursively checking other modules, return a C<Perl::Tags::Tag::Recurse>
+object, which does I<not> create a new tag in the resulting perltags file,
+but instead processes the next file recursively.
 
 =head1 FEATURES
 
@@ -121,6 +137,11 @@ text above has leading whitespace)
 =head2 From the Command Line
 
 See the L<bin/perl-tags> script provided.
+
+=head2 From other editors
+
+Any editor that supports ctags should be able to use this output.  Documentation
+and code patches on how to do this are welcome.
 
 =head1 METHODS
 
@@ -364,6 +385,12 @@ The parsing is done by a number of lightweight objects (parsers) which look for
 subroutine references, variables, module inclusion etc.  When they are
 successful, they call the C<register> method in the main tags object.
 
+Note that if your tagger wants to register not a new I<declaration> but rather
+a I<usage> of another module, then your tagger should return a
+C<Perl::Tags::Tag::Recurse> object.  This is a pseudo-tag which causes the linked
+module to be scanned in turn.  See L<Perl::Tags::Naive>'s handling of C<use>
+statements as an example!
+
 =cut
 
 sub register {
@@ -461,7 +488,8 @@ sub to_string {
 =head2 C<on_register>
 
 Allows tag to meddle with process when registered with the main tagger object.
-Return false if want to prevent registration (true normally).`
+Return false if want to prevent registration (e.g. for control tags such as
+C<Perl::Tags::Tag::Recurse>.)
 
 =cut
 
@@ -586,6 +614,8 @@ sub type { 'l' }
 =head1 C<Perl::Tags::Tag::Recurse>
 
 =head2 C<type>: dummy
+
+This is a pseudo-tag, see L<Perl::Tags/register>.
 
 =head2 C<on_register>
 
