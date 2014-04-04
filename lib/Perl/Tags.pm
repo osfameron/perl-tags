@@ -304,7 +304,8 @@ sub popqueue {
 
 =head2 C<process_item>, C<process_file>
 
-Do the heavy lifting for C<process> above.
+Do the heavy lifting for C<process> above.  Taggers I<must> override the
+abstract method C<process_file>.
 
 =cut
 
@@ -338,35 +339,13 @@ sub process_item {
         level         => $options{level},
     };
 
-    my @parsers = $self->get_parsers(); # function refs
-    
-    $self->process_file( $file, @parsers );
+    $self->process_file( $file );
 
     return $self->{tags};
 }
 
 sub process_file {
-    my ($self, $file, @parsers) = @_;
-
-    open (my $IN, '<', $file) or die "Couldn't open file `$file`: $!\n";
-
-    # default line by line parsing.  Or override it
-
-    my $start = STARTPOD;
-    my $end = ENDPOD;
-
-    while (<$IN>) {
-        next if (/$start/o .. /$end/o);     # Skip over POD.
-        chomp;
-        my $statement = my $line = $_;
-        PARSELOOP: for my $parser (@parsers) {
-            my @tags = $parser->( $self, 
-                                  $line, 
-                                  $statement,
-                                  $file );
-            $self->register( $file, @tags );
-        }
-    }
+    die "Abstract method process_file called";
 }
 
 =head2 C<register>
@@ -390,17 +369,6 @@ sub register {
         my $name = $tag->{name};
         push @{ $self->{tags}{$name}{$file} }, $tag;
     }
-}
-
-=head2 C<get_parsers>
-
-Return the parses for this object.  Abstract, see the subclasses
-such as L<Perl::Tags::Naive> for details.
-
-=cut
-
-sub get_parsers {
-    die "Tried to call get_parsers in virtual superclass\n";
 }
 
 package Perl::Tags::Tag;

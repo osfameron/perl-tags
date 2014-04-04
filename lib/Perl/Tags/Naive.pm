@@ -38,6 +38,42 @@ in the ::Naive package, or use all of the existing parsers and add your own.
 Because ::Naive uses C<can('parser')> instead of C<\&parser>, you
 can just override a particular parser by redefining in the subclass. 
 
+=head2 C<process_file>
+
+::Naive uses a simple line-by-line analysis of Perl code, comparing
+each line against an array of parsers returned by the L<get_parsers> method.
+
+The first of these parsers that matches (if any) will return the
+tag/control to be registred by the tagger.
+
+=cut
+
+sub process_file {
+    my ($self, $file) = @_;
+
+    my @parsers = $self->get_parsers(); # function refs
+
+    open (my $IN, '<', $file) or die "Couldn't open file `$file`: $!\n";
+
+    my $start = STARTPOD;
+    my $end = ENDPOD;
+
+    while (<$IN>) {
+        next if (/$start/o .. /$end/o);     # Skip over POD.
+        chomp;
+        my $statement = my $line = $_;
+        PARSELOOP: for my $parser (@parsers) {
+            my @tags = $parser->( 
+                $self, 
+              $line, 
+              $statement,
+              $file 
+            );
+            $self->register( $file, @tags );
+        }
+    }
+}
+
 =head2 C<get_parsers>
 
 The following parsers are defined by this module.

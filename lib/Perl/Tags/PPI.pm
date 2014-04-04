@@ -20,15 +20,9 @@ sub ppi_all {
 sub process_file {
     my ( $self, $file, @parsers ) = @_;
 
-    for my $parser (@parsers) {
-        my @tags = $parser->( $self, $file );
+    my @tags = $self->ppi_all( $file );
 
-        $self->register( $file, @tags );
-    }
-}
-
-sub get_parsers {
-    shift->can('ppi_all');
+    $self->register( $file, @tags );
 }
 
 sub _tagify {
