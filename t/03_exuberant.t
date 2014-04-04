@@ -3,35 +3,39 @@ use strict; use warnings;
 use Data::Dumper;
 
 use Test::More;
+use Perl::Tags::Tester;
 use FindBin qw($Bin);
 
 use Perl::Tags;
 use Perl::Tags::Naive;
 
 # a naive, yet exuberant tagger
-my $naive_tagger = Perl::Tags::Naive->new( 
+my $exuberant_tagger = Perl::Tags::Naive->new( 
     max_level=>1,
     exts     =>1,
 );
-ok (defined $naive_tagger, 'created an exuberant tagger' );
-isa_ok ($naive_tagger, 'Perl::Tags::Naive' );
-isa_ok ($naive_tagger, 'Perl::Tags' );
+ok (defined $exuberant_tagger, 'created an exuberant tagger' );
+isa_ok ($exuberant_tagger, 'Perl::Tags::Naive' );
+isa_ok ($exuberant_tagger, 'Perl::Tags' );
 
 my $result = 
-    $naive_tagger->process(
+    $exuberant_tagger->process(
         files => [ "$Bin/Test.pm" ],
         refresh=> 1
     );
 ok ($result, 'processed successfully' ) or diag "RESULT $result";
 
-like ($naive_tagger, 
-    qr{Test\t\S+[\\/]Test.pm\t/package Test;/;"\tp\tline:3\tclass:Test}       , 'package line');
-like ($naive_tagger, 
-    qr{bar\t\S+[\\/]Test.pm\t/my \(\$foo, \$bar\);/;"\tv\tline:8\tfile:\tclass:Test} , 'variable 1');
-like ($naive_tagger, 
-    qr{foo\t\S+[\\/]Test.pm\t/my \(\$foo, \$bar\);/;"\tv\tline:8\tfile:\tclass:Test} , 'variable 2');
-like ($naive_tagger, 
-    qr{wibble\t\S+[\\/]Test.pm\t/sub wibble \{/;"\ts\tline:10\tclass:Test}     , 'subroutine');
-
+tag_ok $exuberant_tagger, 
+    Test => "$Bin/Test.pm" => 'package Test;' => 'p' => 'line:3' => 'class:Test',
+   'package line';
+tag_ok $exuberant_tagger, 
+    bar => "$Bin/Test.pm" => 'my ($foo, $bar);' => 'v' => 'line:8' => 'file:' => 'class:Test',
+   'variable 1';
+tag_ok $exuberant_tagger, 
+    foo => "$Bin/Test.pm" => 'my ($foo, $bar);' => 'v' => 'line:8' => 'file:' => 'class:Test',
+   'variable 2';
+tag_ok $exuberant_tagger, 
+    wibble => "$Bin/Test.pm" => 'sub wibble {' => 's' => 'line:10' => 'class:Test',
+   'subroutine';
 
 done_testing;

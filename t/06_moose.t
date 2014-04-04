@@ -24,29 +24,19 @@ my $result =
 ok ($result, 'processed successfully' ) or diag "RESULT $result";
 
 tag_ok $naive_tagger, 
-    'Moosy::Class', 
-    "$Bin/Moosy/Class.pm", 
-    'package Moosy::Class;', 
+    'Moosy::Class' => "$Bin/Moosy/Class.pm" => 'package Moosy::Class;', 
     'package line';
 tag_ok $naive_tagger, 
-    'Moosy::Parent', 
-    "$Bin/Moosy/Parent.pm", 
-    'package Moosy::Parent;', 
+    'Moosy::Parent' => "$Bin/Moosy/Parent.pm" => 'package Moosy::Parent;', 
     'extends line recursively finds parent';
 tag_ok $naive_tagger, 
-    'Moosy::Role1', 
-    "$Bin/Moosy/Role1.pm", 
-    'package Moosy::Role1;', 
+    'Moosy::Role1' => "$Bin/Moosy/Role1.pm" => 'package Moosy::Role1;', 
     'with line with single role finds role';
 tag_ok $naive_tagger, 
-    'Moosy::Role2', 
-    "$Bin/Moosy/Role2.pm", 
-    'package Moosy::Role2;', 
+    'Moosy::Role2' => "$Bin/Moosy/Role2.pm" => 'package Moosy::Role2;', 
     'with line with multiple roles finds role';
 tag_ok $naive_tagger, 
-    'Moosy::Role3', 
-    "$Bin/Moosy/Role3.pm", 
-    'package Moosy::Role3;', 
+    'Moosy::Role3' => "$Bin/Moosy/Role3.pm" => 'package Moosy::Role3;', 
     'with line with multiple roles finds role';
 
 done_testing;

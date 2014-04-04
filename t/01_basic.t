@@ -22,24 +22,16 @@ my $result =
 ok ($result, 'processed successfully' ) or diag "RESULT $result";
 
 tag_ok $naive_tagger, 
-    'Test',
-    "$Bin/Test.pm",
-    'package Test;',
+    Test => "$Bin/Test.pm" => 'package Test;',
     'package line';
 tag_ok $naive_tagger, 
-    'bar',
-    "$Bin/Test.pm",
-    'my ($foo, $bar);', 
+    bar =>  "$Bin/Test.pm" => 'my ($foo, $bar);', 
     'variable 1';
 tag_ok $naive_tagger, 
-    'foo',
-    "$Bin/Test.pm",
-    'my ($foo, $bar);', 
+    foo => "$Bin/Test.pm" => 'my ($foo, $bar);', 
     'variable 2';
 tag_ok $naive_tagger, 
-    'wibble',
-    "$Bin/Test.pm",
-    'sub wibble {', 
+    wibble => "$Bin/Test.pm" => 'sub wibble {', 
     'subroutine';
 
 done_testing;

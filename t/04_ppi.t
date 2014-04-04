@@ -2,14 +2,15 @@
 use strict; use warnings;
 use Data::Dumper;
 
-use Test::More tests => 9;
+use Test::More;
+use Perl::Tags::Tester;
 use FindBin qw($Bin);
 
 SKIP: {
     eval 'use PPI';
-    skip "PPI not installed $@", 9 if $@;
+    skip "PPI not installed $@", 1 if $@;
 
-    use_ok("Perl::Tags::PPI") or skip "Couldn't use Perl::Tags::PPI $@", 8;
+    use_ok("Perl::Tags::PPI") or skip "Couldn't use Perl::Tags::PPI $@", 1;
 
     my $ppi_tagger = Perl::Tags::PPI->new( max_level=>1 );
     ok (defined $ppi_tagger, 'created Perl::Tags' );
@@ -23,9 +24,19 @@ SKIP: {
         );
     ok ($result, 'processed successfully' ) or diag "RESULT $result";
 
-    like ($ppi_tagger, qr{Test\t\S+[\\/]Test.pm\t/package Test;/}       , 'package line');
-    like ($ppi_tagger, qr{\$?bar\t\S+[\\/]Test.pm\t/my \(\\?\$foo, \\?\$bar\);/} , 'variable 1');
-    like ($ppi_tagger, qr{\$?foo\t\S+[\\/]Test.pm\t/my \(\\?\$foo, \\?\$bar\);/} , 'variable 2');
-    like ($ppi_tagger, qr{wibble\t\S+[\\/]Test.pm\t/sub wibble \{/}     , 'subroutine');
 
+    tag_ok $ppi_tagger,
+        Test => "$Bin/Test.pm" => 'package Test;',
+        'package line';
+    tag_ok $ppi_tagger,
+        '$bar' => "$Bin/Test.pm" => 'my ($foo, $bar);',
+        'variable 1';
+    tag_ok $ppi_tagger,
+        '$foo' => "$Bin/Test.pm" => 'my ($foo, $bar);',
+        'variable 2';
+    tag_ok $ppi_tagger,
+        wibble => "$Bin/Test.pm" => 'sub wibble {',
+        'subroutine';
 }
+
+done_testing;

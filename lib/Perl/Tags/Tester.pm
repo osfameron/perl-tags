@@ -4,8 +4,29 @@ use Path::Tiny 'path';
 
 our @EXPORT = qw(tag_ok);
 
+=head1 NAME
+
+Perl::Tags::Tester - testing output of L<Perl::Tags>
+
+=head1 SYNOPSIS
+
+    use Perl::Tags::Tester;
+
+    # do some tagging
+    
+    tag_ok $tagger,
+        SYMBOL => 'path/to/file.pm' => 'searchable bookmark',
+        'Description of this test';
+
+    tag_ok $tagger,
+        SYMBOL => 'path/to/file.pm' => 'searchable bookmark' => 'p' => 'line:3' => 'class:Test',
+        'Add additional parameters for exuberant extension';
+
+=cut
+
 sub tag_ok {
-    my ($tagger, $symbol, $path, $bookmark, $description) = @_;
+    my ($tagger, $symbol, $path, $bookmark) = splice(@_, 0, 4);
+    my $description = pop;
 
     my $canonpath = path($path)->absolute->canonpath;
 
@@ -14,13 +35,22 @@ sub tag_ok {
         $canonpath,
         "/$bookmark/";
 
+    # exuberant extensions
+    if (@_) {
+        $tag .= join "\t",
+            q<;">,
+            @_; 
+    }
+
     my $ok = $tagger =~ /
             ^
             \Q$tag\E
             $
             /mx;
+    my $builder = __PACKAGE__->builder;
 
-    __PACKAGE__->builder->ok( $ok, $description );
+    $builder->ok( $ok, $description )
+        or $builder->diag( "Tags did not match:\n$tag" );
 }
 
 1;
