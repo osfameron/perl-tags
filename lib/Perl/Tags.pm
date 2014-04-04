@@ -348,26 +348,6 @@ sub process_item {
 sub process_file {
     my ($self, $file, @parsers) = @_;
 
-    # SUPER dirty workaround for the fact that Perl::Tags::PPI simply
-    # doesn't cooperate with any other parsers. This whole system
-    # is flawed because you can't use several parsers together. But
-    # I may be misunderstanding things. --Steffen
-
-    my $ppi_parser;
-    if (Perl::Tags::PPI->can('ppi_all')) {
-        my $ppisub = Perl::Tags::PPI->can('ppi_all');
-        my @tmpparsers = @parsers;
-        @parsers = ();
-        foreach my $parser (@tmpparsers) {
-            if ("$parser" ne "$ppisub") {
-                push @parsers, $parser;
-            }
-            else {
-                $ppi_parser = $parser;
-            }
-        }
-    }
-
     open (my $IN, '<', $file) or die "Couldn't open file `$file`: $!\n";
 
     # default line by line parsing.  Or override it
@@ -386,11 +366,6 @@ sub process_file {
                                   $file );
             $self->register( $file, @tags );
         }
-    }
-
-    if (defined $ppi_parser) {
-        my @tags = $ppi_parser->( $self, $file );
-        $self->register( $file, @tags );
     }
 }
 

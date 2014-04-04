@@ -14,7 +14,6 @@ our @ISA = qw(
   Perl::Tags::Naive::Lib
   Perl::Tags::Naive::Spiffy
   Perl::Tags::Naive::Moose
-  Perl::Tags::PPI
 );
 
 {
