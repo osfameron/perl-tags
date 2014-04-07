@@ -13,12 +13,10 @@ use Perl::Tags::Hybrid;
 use Perl::Tags::PPI;
 use Perl::Tags::Naive::Moose; # includes ::Naive
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
-  perl-tags version 0.01. Copyright 2009, Steffen Mueller
-  
   Usage: perl-tags <options> <input files or dirs...>
   Generates "perltags" files for use with your editor of choice.
   
@@ -74,3 +72,8 @@ sub main {
   return;
 }
 
+=head1 AUTHOR
+
+Copyright 2009, Steffen Mueller, with contributions from osfameronosfameron
+
+=cut
