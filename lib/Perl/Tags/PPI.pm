@@ -1,7 +1,7 @@
 package Perl::Tags::PPI;
 
-use strict;
-use warnings;
+use strict; use warnings;
+
 use base qw(Perl::Tags);
 
 use PPI;

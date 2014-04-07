@@ -1,5 +1,8 @@
 package Perl::Tags::Tester;
+
+use strict; use warnings;
 use parent 'Test::Builder::Module';
+
 use Path::Tiny 'path';
 
 our @EXPORT = qw(tag_ok);

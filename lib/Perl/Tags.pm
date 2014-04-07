@@ -148,25 +148,14 @@ and code patches on how to do this are welcome.
 =cut
 
 package Perl::Tags;
+
 use strict; use warnings;
+
 use Data::Dumper;
 use File::Spec;
 
 use overload q("") => \&to_string;
 our $VERSION = 0.28;
-
-{
-    # Tags that start POD:
-    my @start_tags = qw(pod head1 head2 head3 head4 over item back begin
-                        end for encoding);
-    my @end_tags = qw(cut);
-
-    my $startpod = '^=(?:' . join('|', @start_tags) . ')\b';
-    my $endpod = '^=(?:' . join('|', @end_tags) . ')\b';
-
-    sub STARTPOD { qr/$startpod/ }
-    sub ENDPOD { qr/$endpod/ }
-}
 
 =head2 C<new>
 

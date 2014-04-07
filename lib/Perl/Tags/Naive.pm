@@ -1,4 +1,6 @@
 package Perl::Tags::Naive;
+
+use strict; use warnings;
 use parent 'Perl::Tags';
 
 =head1 C<Perl::Tags::Naive>
@@ -48,6 +50,19 @@ tag/control to be registred by the tagger.
 
 =cut
 
+{
+    # Tags that start POD:
+    my @start_tags = qw(pod head1 head2 head3 head4 over item back begin
+                        end for encoding);
+    my @end_tags = qw(cut);
+
+    my $startpod = '^=(?:' . join('|', @start_tags) . ')\b';
+    my $endpod = '^=(?:' . join('|', @end_tags) . ')\b';
+
+    sub STARTPOD { qr/$startpod/ }
+    sub ENDPOD { qr/$endpod/ }
+}
+
 sub get_tags_for_file {
     my ($self, $file) = @_;
 
@@ -55,8 +70,8 @@ sub get_tags_for_file {
 
     open (my $IN, '<', $file) or die "Couldn't open file `$file`: $!\n";
 
-    my $start = STARTPOD;
-    my $end = ENDPOD;
+    my $start = STARTPOD();
+    my $end = ENDPOD();
 
     my @all_tags;
 

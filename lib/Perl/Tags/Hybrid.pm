@@ -1,4 +1,6 @@
 package Perl::Tags::Hybrid;
+
+use strict; use warnings;
 use parent 'Perl::Tags';
 
 =head1 C<Perl::Tags::Hybrid>

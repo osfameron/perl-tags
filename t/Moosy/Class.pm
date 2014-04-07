@@ -13,6 +13,6 @@ has foo => (
 
 around bar => sub {
     print "Ha ha ha\n";
-}
+};
 
 1;

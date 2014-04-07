@@ -1,5 +1,6 @@
 package Perl::Tags::Naive::Spiffy;
 
+use strict; use warnings;
 use parent 'Perl::Tags::Naive';
 
 =head2 C<get_parsers>

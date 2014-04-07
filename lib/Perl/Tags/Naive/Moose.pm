@@ -1,6 +1,6 @@
+use strict; use warnings;
 package Perl::Tags::Naive::Moose;
 
-use Perl::Tags;
 use parent 'Perl::Tags::Naive';
 
 =head2 C<get_parsers>
