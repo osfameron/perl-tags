@@ -26,7 +26,7 @@ sub not_in_file_ok {
     }
 }
 
-not_in_file_ok(README =>
+not_in_file_ok('README.pod' =>
     "The README is used..."       => qr/The README is used/,
     "'version information here'"  => qr/to provide version information/,
 );
