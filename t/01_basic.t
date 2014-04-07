@@ -34,4 +34,6 @@ tag_ok $naive_tagger,
     wibble => "$Bin/Test.pm" => 'sub wibble {', 
     'subroutine';
 
+ok $naive_tagger !~ /sub example/, 'Code in POD is skipped';
+
 done_testing;

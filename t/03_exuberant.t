@@ -35,7 +35,7 @@ tag_ok $exuberant_tagger,
     foo => "$Bin/Test.pm" => 'my ($foo, $bar);' => 'v' => 'line:8' => 'file:' => 'class:Test',
    'variable 2';
 tag_ok $exuberant_tagger, 
-    wibble => "$Bin/Test.pm" => 'sub wibble {' => 's' => 'line:10' => 'class:Test',
-   'subroutine';
+    wibble => "$Bin/Test.pm" => 'sub wibble {' => 's' => 'line:18' => 'class:Test',
+   'subroutine' or diag $exuberant_tagger;
 
 done_testing;

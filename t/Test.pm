@@ -7,6 +7,14 @@ use Data::Dumper;
 
 my ($foo, $bar);
 
+=head1 SYNOPSIS
+
+    sub example {
+        # this sub should not be parsed!
+    }
+
+=cut
+
 sub wibble {
     # blah
 }
