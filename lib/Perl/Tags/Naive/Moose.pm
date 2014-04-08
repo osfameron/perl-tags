@@ -258,6 +258,18 @@ sub role_line {
     return;
 }
 
+=head1 C<Perl::Tags::Tag::Method>
+
+=head2 C<type>: Method
+
+=cut
+
+package Perl::Tags::Tag::Method;
+our @ISA = qw/Perl::Tags::Tag::Sub/;
+
+sub type { 'Method' }
+
+
 =head1 C<Perl::Tags::Tag::Has>
 
 =head2 C<type>: Has
@@ -265,7 +277,7 @@ sub role_line {
 =cut
 
 package Perl::Tags::Tag::Has;
-our @ISA = qw/Perl::Tags::Tag/;
+our @ISA = qw/Perl::Tags::Tag::Method/;
 
 sub type { 'Has' }
 
@@ -276,7 +288,7 @@ sub type { 'Has' }
 =cut
 
 package Perl::Tags::Tag::Around;
-our @ISA = qw/Perl::Tags::Tag/;
+our @ISA = qw/Perl::Tags::Tag::Method/;
 
 sub type { 'Around' }
 
@@ -287,7 +299,7 @@ sub type { 'Around' }
 =cut
 
 package Perl::Tags::Tag::Before;
-our @ISA = qw/Perl::Tags::Tag/;
+our @ISA = qw/Perl::Tags::Tag::Method/;
 
 sub type { 'Before' }
 
@@ -298,7 +310,7 @@ sub type { 'Before' }
 =cut
 
 package Perl::Tags::Tag::After;
-our @ISA = qw/Perl::Tags::Tag/;
+our @ISA = qw/Perl::Tags::Tag::Method/;
 
 sub type { 'After' }
 
@@ -309,7 +321,7 @@ sub type { 'After' }
 =cut
 
 package Perl::Tags::Tag::Override;
-our @ISA = qw/Perl::Tags::Tag/;
+our @ISA = qw/Perl::Tags::Tag::Method/;
 
 sub type { 'Override' }
 
@@ -320,7 +332,7 @@ sub type { 'Override' }
 =cut
 
 package Perl::Tags::Tag::Augment;
-our @ISA = qw/Perl::Tags::Tag/;
+our @ISA = qw/Perl::Tags::Tag::Method/;
 
 sub type { 'Augment' }
 
@@ -331,20 +343,9 @@ sub type { 'Augment' }
 =cut
 
 package Perl::Tags::Tag::Class;
-our @ISA = qw/Perl::Tags::Tag/;
+our @ISA = qw/Perl::Tags::Tag::Package/;
 
 sub type { 'Class' }
-
-=head1 C<Perl::Tags::Tag::Method>
-
-=head2 C<type>: Method
-
-=cut
-
-package Perl::Tags::Tag::Method;
-our @ISA = qw/Perl::Tags::Tag/;
-
-sub type { 'Method' }
 
 =head1 C<Perl::Tags::Tag::Role>
 
@@ -353,7 +354,7 @@ sub type { 'Method' }
 =cut
 
 package Perl::Tags::Tag::Role;
-our @ISA = qw/Perl::Tags::Tag/;
+our @ISA = qw/Perl::Tags::Tag::Package/;
 
 sub type { 'Role' }
 
