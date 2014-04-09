@@ -11,11 +11,19 @@ use lib "$FindBin::Bin/../lib";
   Generates "perltags" files for use with your editor of choice.
   
   Options:
+
+  -h/--help      Display this help
+  -v/--version   Display the version number
+
   -o/--outfile   Set the path/name of the output file (default: perltags)
   -d/--depth     Set the max recursion depth (recursion into "use Module", etc)
-                 (default: 100 (~ infinity))
+                 (default: 10, use 0 to set no limit)
   --vars/--no-vars/--variables/--no-variables
                  Set whether variables should be indexed. (Default: yes)
+
+  -p/--ppi       use PPI parsing (Default: no)
+  --prune        Glob patterns to prune. May be passed multiple times. 
+                 (Default: .git, .svn)
 
 =cut
 

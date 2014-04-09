@@ -5,7 +5,7 @@ use strict; use warnings;
 package App::Perl::Tags;
 use Getopt::Long ();
 use Pod::Usage qw/pod2usage/;
-use File::Find ();
+use File::Find::Rule;
 
 use Perl::Tags;
 use Perl::Tags::Hybrid;
@@ -14,65 +14,98 @@ use Perl::Tags::Naive::Moose; # includes ::Naive
 
 our $VERSION = '0.02';
 
-=head1 SYNOPSIS
-
-  Usage: perl-tags <options> <input files or dirs...>
-  Generates "perltags" files for use with your editor of choice.
-  
-  Options:
-  -o/--outfile   Set the path/name of the output file (default: perltags)
-  -d/--depth     Set the max recursion depth (recursion into "use Module", etc)
-                 (default: 100 (~ infinity))
-  --vars/--no-vars/--variables/--no-variables
-                 Set whether variables should be indexed. (Default: yes)
-
-=cut
-
 sub run {
-    our $Outfile = 'perltags';
-    our $RecursionDepth = 100;
-    our $IndexVars = 1;
+  my $class = shift;
 
-    # more control is TODO
-    Getopt::Long::GetOptions(
-      'h|help'          => sub {pod2usage();},
-      'o|outfile=s'     => \$Outfile,
-      'd|depth=i'       => \$RecursionDepth,
-      'vars|variables!' => \$IndexVars,
-    );
+  my %options = (
+    outfile => 'perltags',
+    depth => 10,
+    variables => 1,
+    ppi => 0,
+    prune => [ ],
+    help => sub { $class->usage() },
+    version => sub { $class->version() },
+  );
 
-    pod2usage() unless @ARGV;
+  Getopt::Long::GetOptions(
+    \%options,
+    'help|h',
+    'version|v',
+    'outfile|o=s',
+    'prune=s@',
+    'depth|d=i',
+    'vars|variables!',
+    'ppi|p!',
+  );
 
-    my %opts = (
-      max_level    => $RecursionDepth,
-      exts         => 1,
-      do_variables => $IndexVars,
-    );
+  $class->usage() unless @ARGV;
 
-    main($Outfile, %opts);
-    exit();
+  $options{paths} = \@ARGV;
+
+  my $self = $class->new(%options);
+  $self->main();
+  exit();
+}
+
+sub new {
+  my ($class, %options) = @_;
+  $options{prune} = [ '.git', '.svn' ] unless @{ $options{prune} || [] };
+  return bless \%options, $class;
+}
+
+sub version {
+  print "perl-tags v. $VERSION (Perl Tags v. $Perl::Tags::VERSION)\n";
+  exit();
+}
+
+sub usage {
+  pod2usage(0);
 }
 
 sub main {
-  my ($Outfile, %opts) = @_;
+  my $self = shift;
+
+  my %args = (
+    max_level    => $self->{depth},
+    exts         => 1,
+    do_variables => $self->{variables},
+  );
+
 
   my $ptag = Perl::Tags::Hybrid->new(
-    %opts,
+    %args,
     taggers => [
-      Perl::Tags::Naive::Moose->new( %opts ),
-      Perl::Tags::PPI->new( %opts ),
+      Perl::Tags::Naive::Moose->new( %args ),
+      $self->{ppi} ? Perl::Tags::PPI->new( %args ) : (),
     ],
   );
 
-  my @files;
-  File::Find::find(
-    sub { push @files, $File::Find::name if -f $_ },
-    @ARGV
-  );
+  my @files = $self->get_files;
 
   $ptag->process(files => \@files);
-  $ptag->output(outfile => $Outfile); 
+  $ptag->output(outfile => $self->{outfile}); 
   return;
+}
+
+sub get_files {
+  my $self = shift;
+  my @prune = @{ $self->{prune} };
+  my @paths = @{ $self->{paths} };
+
+  my $rule = File::Find::Rule->new;
+
+  my @files = 
+    $rule->or(
+      $rule->new
+           ->directory
+           ->name(@prune)
+           ->prune
+           ->discard,
+      $rule->new
+        ->file,
+    )->in(@paths);
+
+  return @files;
 }
 
 =head1 AUTHOR
@@ -80,5 +113,7 @@ sub main {
 Copyright 2009-2014, Steffen Mueller, with contributions from osfameron
 
 =cut
+
+# vim:ts=2:sw=2
 
 1;
