@@ -3,7 +3,7 @@ use strict; use warnings;
 use Data::Dumper;
 
 use Test::More;
-use Perl::Tags::Tester;
+use Test::Perl::Tags;
 use FindBin qw($Bin);
 
 SKIP: {

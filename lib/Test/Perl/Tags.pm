@@ -1,4 +1,4 @@
-package Perl::Tags::Tester;
+package Test::Perl::Tags;
 
 use strict; use warnings;
 use parent 'Test::Builder::Module';
@@ -9,11 +9,11 @@ our @EXPORT = qw(tag_ok);
 
 =head1 NAME
 
-Perl::Tags::Tester - testing output of L<Perl::Tags>
+Test::Perl::Tags - testing output of L<Perl::Tags>
 
 =head1 SYNOPSIS
 
-    use Perl::Tags::Tester;
+    use Test::Perl::Tags;
 
     # do some tagging
     
