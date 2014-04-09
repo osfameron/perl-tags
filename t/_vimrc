@@ -2,7 +2,7 @@ if has('perl')
 function s:init_tags()
 perl <<EOF
     use lib "$ENV{HOME}/.vim/perllib/", "$ENV{HOME}/cpan";
-    use Perl::Tags;
+    use Perl::Tags::Naive;
     $naive_tagger = Perl::Tags::Naive->new( max_level=>3, exts =>1 );
         # only go one level down by default, NOPE, 3 is better
         # cuz then can look at SN_Application methods

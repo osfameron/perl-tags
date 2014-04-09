@@ -15,6 +15,8 @@ requires        'Module::Locate';
 requires        'PPI';
 build_requires  'Test::More' => 0.42;
 build_requires  'Test::Strict';
+build_requires  'Test::Exception';
+build_requires  'Test::LongString';
 build_requires  'Test::Builder' => 0.42;
 build_requires  'Path::Tiny';
 build_requires  'Data::Dumper';

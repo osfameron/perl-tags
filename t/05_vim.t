@@ -3,6 +3,7 @@ use strict; use warnings;
 use Data::Dumper;
 
 use Test::More tests=>1;
+use Test::LongString;
 
 use FindBin qw( $Bin );
 use File::Copy;
@@ -50,7 +51,7 @@ SKIP: {
     my $modified = <$FH>;
     my $expected = <DATA>;
 
-    is ($modified, $expected, "Got expected info after jumping around tags in vim");
+    is_string ($modified, $expected, "Got expected info after jumping around tags in vim");
 }
 
 __DATA__
@@ -65,6 +66,14 @@ use Data::Dumper;
 # foo line here
 # bar line here
 my ($foo, $bar);
+
+=head1 SYNOPSIS
+
+    sub example {
+        # this sub should not be parsed!
+    }
+
+=cut
 
 # wibble line here
 sub wibble {
