@@ -2,18 +2,8 @@
 use 5.006;
 use strict;
 use warnings;
-
-package App::Perl::Tags;
-use Getopt::Long ();
-use Pod::Usage qw/pod2usage/;
-use File::Find ();
-
-use Perl::Tags;
-use Perl::Tags::Hybrid;
-use Perl::Tags::PPI;
-use Perl::Tags::Naive::Moose; # includes ::Naive
-
-our $VERSION = '0.02';
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 
 =head1 SYNOPSIS
 
@@ -29,51 +19,11 @@ our $VERSION = '0.02';
 
 =cut
 
-our $Outfile = 'perltags';
-our $RecursionDepth = 100;
-our $IndexVars = 1;
-
-# more control is TODO
-Getopt::Long::GetOptions(
-  'h|help'          => sub {pod2usage();},
-  'o|outfile=s'     => \$Outfile,
-  'd|depth=i'       => \$RecursionDepth,
-  'vars|variables!' => \$IndexVars,
-);
-
-pod2usage() unless @ARGV;
-
-main();
-exit();
-
-sub main {
-  my %opts = (
-    max_level    => $RecursionDepth,
-    exts         => 1,
-    do_variables => $IndexVars,
-  );
-
-  my $ptag = Perl::Tags::Hybrid->new(
-    %opts,
-    taggers => [
-      Perl::Tags::Naive::Moose->new( %opts ),
-      Perl::Tags::PPI->new( %opts ),
-    ],
-  );
-
-  my @files;
-  File::Find::find(
-    sub { push @files, $File::Find::name if -f $_ },
-    @ARGV
-  );
-
-  $ptag->process(files => \@files);
-  $ptag->output(outfile => $Outfile); 
-  return;
-}
+use App::Perl::Tags;
+App::Perl::Tags->run;
 
 =head1 AUTHOR
 
-Copyright 2009, Steffen Mueller, with contributions from osfameronosfameron
+Copyright 2009-2014, Steffen Mueller, with contributions from osfameron
 
 =cut
