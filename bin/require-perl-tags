@@ -1,0 +1,13 @@
+#!/usr/bin/env perl
+use 5.006;
+use strict; use warnings;
+
+use Perl::Tags;
+use Perl::Tags::Hybrid;
+use Perl::Tags::PPI;
+use Perl::Tags::Naive::Moose; # includes ::Naive
+
+# it is intended to be able to `require` this file, to be called
+# simply from an Editor, and to be fatpackable
+
+1;
