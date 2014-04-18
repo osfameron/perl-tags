@@ -20,6 +20,10 @@ NB: You will need to have a vim with perl compiled in it.  Debuntu packages
 this as C<vim-perl>. Alternatively you can compile from source (you'll need
 Perl + the development headers C<libperl-dev>).
 
+(Note that C<perl-tags-vim> includes its own copy of C<Perl::Tags> through
+the magic of git submodules and L<App::FatPacker>, so you don't need to install
+this module from CPAN if you are only intending to use it with Vim as above!)
+
 =head3 From the Command Line
 
 See the L<bin/perl-tags> script provided.
