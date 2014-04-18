@@ -6,6 +6,31 @@ Perl::Tags - Generate (possibly exuberant) Ctags style tags for Perl sourcecode
 
 =head1 SYNOPSIS
 
+=head2 Using Perl::Tags to assist your development
+
+C<Perl::Tags> is designed to be integrated into your development
+environment.  Here are a few ways to use it:
+
+=head3 With Vim
+
+C<Perl::Tags> was originally designed to be used with vim.  See
+L<https://github.com/osfameron/perl-tags-vim> for an easily installable Plugin.
+
+NB: You will need to have a vim with perl compiled in it.  Debuntu packages
+this as C<vim-perl>. Alternatively you can compile from source (you'll need
+Perl + the development headers C<libperl-dev>).
+
+=head3 From the Command Line
+
+See the L<bin/perl-tags> script provided.
+
+=head3 From other editors
+
+Any editor that supports ctags should be able to use this output.  Documentation
+and code patches on how to do this are welcome.
+
+=head2 Using the Perl::Tags module within your code
+
         use Perl::Tags;
         my $naive_tagger = Perl::Tags::Naive->new( max_level=>2 );
         $naive_tagger->process(
@@ -18,9 +43,7 @@ Perl::Tags - Generate (possibly exuberant) Ctags style tags for Perl sourcecode
 Recursively follows C<use> and C<require> statements, up to a maximum
 of C<max_level>.
 
-See also L<bin/perl-tags> for a command-line script.
-
-=head1 USAGE
+=head1 DETAILS
 
 There are several taggers distributed with this distribution, including:
 
@@ -65,83 +88,6 @@ but instead processes the next file recursively.
 
     * Recursive, incremental tagging.
     * parses `use_ok`/`require_ok` line from Test::More
-
-=head1 DEVELOPING WITH Perl::Tags
-
-C<Perl::Tags> is designed to be integrated into your development
-environment.  Here are a few ways to use it:
-
-=head2 With Vim
-
-C<Perl::Tags> was originally designed to be used with vim.  My
-C<~/.vim/ftplugin/perl.vim> contains the following:
-
-    setlocal iskeyword+=:  " make tags with :: in them useful
-
-    if ! exists("s:defined_functions")
-    function s:init_tags()
-        perl <<EOF
-            use Perl::Tags;
-            $naive_tagger = Perl::Tags::Naive->new( max_level=>2 );
-                # only go one level down by default
-    EOF
-    endfunction
-
-    " let vim do the tempfile cleanup and protection
-    let s:tagsfile = tempname()
-
-    function s:do_tags(filename)
-        perl <<EOF
-            my $filename = VIM::Eval('a:filename');
-
-            $naive_tagger->process(files => $filename, refresh=>1 );
-
-            my $tagsfile=VIM::Eval('s:tagsfile');
-            VIM::SetOption("tags+=$tagsfile");
-
-            # of course, it may not even output, for example, if there's
-            # nothing new to process
-            $naive_tagger->output( outfile => $tagsfile );
-    EOF
-    endfunction
-
-    call s:init_tags() " only the first time
-
-    let s:defined_functions = 1
-    endif
-
-    call s:do_tags(expand('%'))
-
-    augroup perltags
-    au!
-    autocmd BufRead,BufWritePost *.pm,*.pl call s:do_tags(expand('%'))
-    augroup END
-
-Note the following:
-
-=over 4
-
-=item *
-
-You will need to have a vim with perl compiled in it.  Debuntu packages this as
-C<vim-perl>. Alternatively you can compile from source (you'll need Perl + the
-development headers C<libperl-dev>).
-
-=item *
-
-The C<EOF> in the examples has to be at the beginning of the line (the verbatim
-text above has leading whitespace)
-
-=back
-
-=head2 From the Command Line
-
-See the L<bin/perl-tags> script provided.
-
-=head2 From other editors
-
-Any editor that supports ctags should be able to use this output.  Documentation
-and code patches on how to do this are welcome.
 
 =head1 METHODS
 

@@ -4,6 +4,31 @@ Perl::Tags - Generate (possibly exuberant) Ctags style tags for Perl sourcecode
 
 =head1 SYNOPSIS
 
+=head2 Using Perl::Tags to assist your development
+
+C<Perl::Tags> is designed to be integrated into your development
+environment.  Here are a few ways to use it:
+
+=head3 With Vim
+
+C<Perl::Tags> was originally designed to be used with vim.  See
+L<https://github.com/osfameron/perl-tags-vim> for an easily installable Plugin.
+
+NB: You will need to have a vim with perl compiled in it.  Debuntu packages
+this as C<vim-perl>. Alternatively you can compile from source (you'll need
+Perl + the development headers C<libperl-dev>).
+
+=head3 From the Command Line
+
+See the L<bin/perl-tags> script provided.
+
+=head3 From other editors
+
+Any editor that supports ctags should be able to use this output.  Documentation
+and code patches on how to do this are welcome.
+
+=head2 Using the Perl::Tags module within your code
+
         use Perl::Tags;
         my $naive_tagger = Perl::Tags::Naive->new( max_level=>2 );
         $naive_tagger->process(
@@ -16,9 +41,7 @@ Perl::Tags - Generate (possibly exuberant) Ctags style tags for Perl sourcecode
 Recursively follows C<use> and C<require> statements, up to a maximum
 of C<max_level>.
 
-See also L<bin/perl-tags> for a command-line script.
-
-=head1 USAGE
+=head1 DETAILS
 
 There are several taggers distributed with this distribution, including:
 
@@ -63,83 +86,6 @@ but instead processes the next file recursively.
 
     * Recursive, incremental tagging.
     * parses `use_ok`/`require_ok` line from Test::More
-
-=head1 DEVELOPING WITH Perl::Tags
-
-C<Perl::Tags> is designed to be integrated into your development
-environment.  Here are a few ways to use it:
-
-=head2 With Vim
-
-C<Perl::Tags> was originally designed to be used with vim.  My
-C<~/.vim/ftplugin/perl.vim> contains the following:
-
-    setlocal iskeyword+=:  " make tags with :: in them useful
-
-    if ! exists("s:defined_functions")
-    function s:init_tags()
-        perl <<EOF
-            use Perl::Tags;
-            $naive_tagger = Perl::Tags::Naive->new( max_level=>2 );
-                # only go one level down by default
-    EOF
-    endfunction
-
-    " let vim do the tempfile cleanup and protection
-    let s:tagsfile = tempname()
-
-    function s:do_tags(filename)
-        perl <<EOF
-            my $filename = VIM::Eval('a:filename');
-
-            $naive_tagger->process(files => $filename, refresh=>1 );
-
-            my $tagsfile=VIM::Eval('s:tagsfile');
-            VIM::SetOption("tags+=$tagsfile");
-
-            # of course, it may not even output, for example, if there's
-            # nothing new to process
-            $naive_tagger->output( outfile => $tagsfile );
-    EOF
-    endfunction
-
-    call s:init_tags() " only the first time
-
-    let s:defined_functions = 1
-    endif
-
-    call s:do_tags(expand('%'))
-
-    augroup perltags
-    au!
-    autocmd BufRead,BufWritePost *.pm,*.pl call s:do_tags(expand('%'))
-    augroup END
-
-Note the following:
-
-=over 4
-
-=item *
-
-You will need to have a vim with perl compiled in it.  Debuntu packages this as
-C<vim-perl>. Alternatively you can compile from source (you'll need Perl + the
-development headers C<libperl-dev>).
-
-=item *
-
-The C<EOF> in the examples has to be at the beginning of the line (the verbatim
-text above has leading whitespace)
-
-=back
-
-=head2 From the Command Line
-
-See the L<bin/perl-tags> script provided.
-
-=head2 From other editors
-
-Any editor that supports ctags should be able to use this output.  Documentation
-and code patches on how to do this are welcome.
 
 =head1 METHODS
 
@@ -231,109 +177,6 @@ a I<usage> of another module, then your tagger should return a
 C<Perl::Tags::Tag::Recurse> object.  This is a pseudo-tag which causes the linked
 module to be scanned in turn.  See L<Perl::Tags::Naive>'s handling of C<use>
 statements as an example!
-
-
-=cut
-
-=head2 C<new>
-
-Returns a new tag object
-
-
-=cut
-
-=head2 C<type>, C<modify_options>
-
-Abstract methods
-
-
-=cut
-
-=head2 C<to_string>
-
-A tag stringifies to an appropriate line in a ctags file.
-
-
-=cut
-
-=head2 C<on_register>
-
-Allows tag to meddle with process when registered with the main tagger object.
-Return false if want to prevent registration (e.g. for control tags such as
-C<Perl::Tags::Tag::Recurse>.)
-
-
-=cut
-
-=head1 C<Perl::Tags::Tag::Package>
-
-=head2 C<type>: p
-
-=head2 C<modify_options>
-
-Sets static=0
-
-=head2 C<on_register>
-
-Sets the package name
-
-
-=cut
-
-=head1 C<Perl::Tags::Tag::Var>
-
-=head2 C<type>: v
-
-=head2 C<on_register>
-
-        Make a tag for this variable unless we're told not to.  We
-        assume that a variable is always static, unless it appears
-        in a package before any sub.  (Not necessarily true, but
-        it's ok for most purposes and Vim works fine even if it is
-        incorrect)
-            - pltags.pl comments
-
-
-=cut
-
-=head1 C<Perl::Tags::Tag::Sub>
-
-=head2 C<type>: s
-
-=head2 C<on_register>
-
-        Make a tag for this sub unless we're told not to.  We assume
-        that a sub is static, unless it appears in a package.  (Not
-        necessarily true, but it's ok for most purposes and Vim works
-        fine even if it is incorrect)
-            - pltags comments
-
-
-=cut
-
-=head1 C<Perl::Tags::Tag::Constant>
-
-=head2 C<type>: c
-
-
-=cut
-
-=head1 C<Perl::Tags::Tag::Label>
-
-=head2 C<type>: l
-
-
-=cut
-
-=head1 C<Perl::Tags::Tag::Recurse>
-
-=head2 C<type>: dummy
-
-This is a pseudo-tag, see L<Perl::Tags/register>.
-
-=head2 C<on_register>
-
-Recurse adding this new module to the queue.
 
 
 =cut

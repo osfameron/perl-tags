@@ -1,0 +1,3 @@
+#!/bin/bash
+cd `dirname $0`/..
+perldoc -u lib/Perl/Tags.pm > README.pod
