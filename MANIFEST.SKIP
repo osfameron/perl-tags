@@ -29,5 +29,11 @@
 
 \.gitignore
 
+# Devel::Cover
+cover_db
+
+# perltags's own artefacts
+perltags
+
 # skip releases
 Perl-Tags-.*\.tar\.gz$

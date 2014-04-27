@@ -1,5 +1,14 @@
 Revision history for Perl-Tags
 
+0.30    2014-04-27
+        Reorganisation, extraction of various modules into separate files
+        Documentation update to reflect above
+        ::Hybrid tagger, solving problem of combining PPI and ::Naive taggers
+        ::Naive::Moose (by dr_bean)
+        Test improvements including Test::Perl::Tags
+        Improvements to bin/perl-tags flags and defaults
+        Fatpacked script for the benefit of editor integration
+
 0.28    2009-11-24
         Update MANIFEST (via tsee++)
 

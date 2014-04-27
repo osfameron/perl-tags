@@ -13,7 +13,7 @@ requires        'File::Temp';
 requires        'File::Find::Rule';
 requires        'Module::Locate';
 requires        'PPI';
-requires  'Path::Tiny';
+requires        'Path::Tiny';
 test_requires  'Test::More' => 0.42;
 test_requires  'Test::Strict';
 test_requires  'Test::Exception';
