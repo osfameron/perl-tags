@@ -36,7 +36,7 @@ sub run {
     'files|L=s',
     'prune=s@',
     'depth|d=i',
-    'vars|variables!',
+    'variables|vars!',
     'ppi|p!',
   );
 
