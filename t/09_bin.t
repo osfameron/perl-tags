@@ -68,6 +68,50 @@ MY_PM
     };
 }
 
+for my $files_opt (qw(-L -files)) {
+    subtest "check $files_opt option: file" => sub {
+        my $tmpdir = File::Temp->newdir(CLEANUP => 1);
+        diag "working in $tmpdir" if 0;
+        my $tags_file = catfile($tmpdir, 'perltags');
+        my $pm_file = catfile($tmpdir, "My.pm");
+        IO::File->new($pm_file, "w")->print(<<'MY_PM');
+            package My;
+            our $xyzzy;
+MY_PM
+        my $input_file = catfile($tmpdir, "list");
+        IO::File->new($input_file, "w")->print($pm_file);
+        my ($stdout, $stderr, $exit) = capture {
+            system "$FindBin::Bin/../bin/perl-tags -o $tags_file $files_opt ".
+                   "$input_file";
+        };
+        ok ! $exit, 'command successful';
+        is $stderr, '', 'No stdout';
+        is $stderr, '', 'No stderr';
+        ok grep_file($tags_file, qr/package/), "$tags_file contains package";
+    };
+}
+
+for my $files_opt (qw(-L -files)) {
+    subtest "check $files_opt option: stdin" => sub {
+        my $tmpdir = File::Temp->newdir(CLEANUP => 1);
+        diag "working in $tmpdir" if 0;
+        my $tags_file = catfile($tmpdir, 'perltags');
+        my $pm_file = catfile($tmpdir, "My.pm");
+        IO::File->new($pm_file, "w")->print(<<'MY_PM');
+            package My;
+            our $xyzzy;
+MY_PM
+        my ($stdout, $stderr, $exit) = capture {
+            system "echo $pm_file | $FindBin::Bin/../bin/perl-tags ".
+                   "-o $tags_file $files_opt -";
+        };
+        ok ! $exit, 'command successful';
+        is $stderr, '', 'No stdout';
+        is $stderr, '', 'No stderr';
+        ok grep_file($tags_file, qr/package/), "$tags_file contains package";
+    };
+}
+
 done_testing;
 
 sub grep_file {
