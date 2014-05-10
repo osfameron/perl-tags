@@ -1,6 +1,8 @@
 use strict; use warnings;
 use Test::More;
 
+use File::Spec::Functions qw(catfile);
+use File::Temp;
 use FindBin;
 
 use Capture::Tiny 'capture';
@@ -43,4 +45,32 @@ subtest 'check get_files method' => sub {
         'Expected files after pruning';
 };
 
+for my $no_vars (qw(-no-vars --no-vars -no-variables --no-variables)) {
+    subtest "check $no_vars options" => sub {
+        my $tmpdir = File::Temp->newdir(CLEANUP => 1);
+        diag "working in $tmpdir" if 0;
+        my $tags_file = catfile($tmpdir, 'perltags');
+        my $input_file = catfile($tmpdir, "My.pm");
+        IO::File->new($input_file, "w")->print(<<'MY_PM');
+            package My;
+            our $xyzzy;
+MY_PM
+        my ($stdout, $stderr, $exit) = capture {
+            system "$FindBin::Bin/../bin/perl-tags -o $tags_file $no_vars ".
+                   "$input_file";
+        };
+        ok ! $exit, 'command successful';
+        is $stderr, '', 'No stdout';
+        is $stderr, '', 'No stderr';
+        ok grep_file($tags_file, qr/package/), "$tags_file contains package";
+        ok !grep_file($tags_file, qr/xyzzy/),
+            "$tags_file does not contain variable name";
+    };
+}
+
 done_testing;
+
+sub grep_file {
+    my ($filename, $re) = @_;
+    grep /$re/, IO::File->new($filename)->getlines;
+}
