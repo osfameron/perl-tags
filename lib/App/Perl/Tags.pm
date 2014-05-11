@@ -9,7 +9,6 @@ use File::Find::Rule;
 
 use Perl::Tags;
 use Perl::Tags::Hybrid;
-use Perl::Tags::PPI;
 use Perl::Tags::Naive::Moose; # includes ::Naive
 
 our $VERSION = '0.02';
@@ -80,14 +79,13 @@ sub main {
     do_variables => $self->{variables},
   );
 
+  my @taggers = ( Perl::Tags::Naive::Moose->new( %args ) );
+  if ($self->{ppi}) {
+    require Perl::Tags::PPI;
+    push @taggers, Perl::Tags::PPI->new( %args );
+  }
 
-  my $ptag = Perl::Tags::Hybrid->new(
-    %args,
-    taggers => [
-      Perl::Tags::Naive::Moose->new( %args ),
-      $self->{ppi} ? Perl::Tags::PPI->new( %args ) : (),
-    ],
-  );
+  my $ptag = Perl::Tags::Hybrid->new( %args, taggers => \@taggers );
 
   my @files = do {
     if (defined $self->{files}) {
