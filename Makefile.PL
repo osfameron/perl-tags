@@ -27,6 +27,9 @@ recommends      'PPI';
 
 # additional modules required for authoring new versions.
 recommends      'App::FatPacked';
+# xt_requires:
+recommends      'Moose'; # to test syntax of t/Moosy
+# recommends 'PPI'; (as above) to test syntax of ::PPI
 
 install_script  'bin/perl-tags';
 install_script  'bin/require-perl-tags';
