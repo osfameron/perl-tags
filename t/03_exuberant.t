@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 use strict; use warnings;
 use Data::Dumper;
 
@@ -26,16 +25,16 @@ my $result =
 ok ($result, 'processed successfully' ) or diag "RESULT $result";
 
 tag_ok $exuberant_tagger, 
-    Test => "$Bin/Test.pm" => 'package Test;' => 'p' => 'line:3' => 'class:Test',
+    Test => "$Bin/Test.pm" => 'package Test;' => 'p' => 'line:1' => 'class:Test',
    'package line';
 tag_ok $exuberant_tagger, 
-    bar => "$Bin/Test.pm" => 'my ($foo, $bar);' => 'v' => 'line:8' => 'file:' => 'class:Test',
+    bar => "$Bin/Test.pm" => 'my ($foo, $bar);' => 'v' => 'line:6' => 'file:' => 'class:Test',
    'variable 1';
 tag_ok $exuberant_tagger, 
-    foo => "$Bin/Test.pm" => 'my ($foo, $bar);' => 'v' => 'line:8' => 'file:' => 'class:Test',
+    foo => "$Bin/Test.pm" => 'my ($foo, $bar);' => 'v' => 'line:6' => 'file:' => 'class:Test',
    'variable 2';
 tag_ok $exuberant_tagger, 
-    wibble => "$Bin/Test.pm" => 'sub wibble {' => 's' => 'line:18' => 'class:Test',
+    wibble => "$Bin/Test.pm" => 'sub wibble {' => 's' => 'line:16' => 'class:Test',
    'subroutine' or diag $exuberant_tagger;
 
 done_testing;

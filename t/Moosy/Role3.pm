@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 package Moosy::Role3;
 use Moose::Role;
 
