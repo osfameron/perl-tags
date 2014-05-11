@@ -12,16 +12,21 @@ requires        'File::Spec';
 requires        'File::Temp';
 requires        'File::Find::Rule';
 requires        'Module::Locate';
-requires        'PPI';
-requires  'Path::Tiny';
-test_requires  'Test::More' => 0.42;
-test_requires  'Test::Strict';
-test_requires  'Test::Exception';
-test_requires  'Test::LongString';
-test_requires  'Test::Builder' => 0.42;
+requires        'Path::Tiny';
+requires        'parent';
+test_requires   'Test::More' => 0.42;
+test_requires   'Test::Strict';
+test_requires   'Test::Exception';
+test_requires   'Test::LongString';
+test_requires   'Test::Builder' => 0.42;
 build_requires  'Data::Dumper';
 build_requires  'Capture::Tiny';
-# feature 'develop' => 'App::FatPacked' # TODO
+
+# additional modules needed for additional tagging functionality.
+recommends      'PPI';
+
+# additional modules required for authoring new versions.
+recommends      'App::FatPacked';
 
 install_script  'bin/perl-tags';
 install_script  'bin/require-perl-tags';
