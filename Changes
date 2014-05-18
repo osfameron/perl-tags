@@ -1,5 +1,12 @@
 Revision history for Perl-Tags
 
+0.31    2014-05-18
+        perl-tags: Added -files option. Fixed -no-vars (DMITRI)
+        Bugfixes:
+        - dependencies (PPI optional, parent, App::Fatpacker)
+        - errors caused by shebang lines in tests
+        - xt/strict.t
+
 0.30    2014-04-27
         Reorganisation, extraction of various modules into separate files
         Documentation update to reflect above

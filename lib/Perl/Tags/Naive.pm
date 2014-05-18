@@ -3,6 +3,8 @@ package Perl::Tags::Naive;
 use strict; use warnings;
 use parent 'Perl::Tags';
 
+our $VERSION = '0.02';
+
 =head1 C<Perl::Tags::Naive>
 
 A naive implementation.  That is to say, it's based on the classic C<pltags.pl>

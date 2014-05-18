@@ -3,6 +3,8 @@ package Perl::Tags::Hybrid;
 use strict; use warnings;
 use parent 'Perl::Tags';
 
+our $VERSION = '0.02';
+
 =head1 C<Perl::Tags::Hybrid>
 
 Combine the results of multiple parsers, for example C<Perl::Tags::Naive>

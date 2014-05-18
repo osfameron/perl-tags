@@ -6,6 +6,7 @@ use parent 'Test::Builder::Module';
 use Path::Tiny 'path';
 
 our @EXPORT = qw(tag_ok);
+our $VERSION = '0.02';
 
 =head1 NAME
 

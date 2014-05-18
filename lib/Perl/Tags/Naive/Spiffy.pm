@@ -3,6 +3,8 @@ package Perl::Tags::Naive::Spiffy;
 use strict; use warnings;
 use parent 'Perl::Tags::Naive';
 
+our $VERSION = '0.02';
+
 =head2 C<get_parsers>
 
 The following parsers are defined by this module.

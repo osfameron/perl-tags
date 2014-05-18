@@ -27,8 +27,8 @@ lib/Perl/Tags/PPI.pm
 lib/Perl/Tags/Tag.pm
 lib/Test/Perl/Tags.pm
 Makefile.PL
-MANIFEST
-META.yml			# Will be created by "make dist"
+MANIFEST			This list of files
+META.yml
 MYMETA.json
 MYMETA.yml
 README
@@ -45,13 +45,11 @@ t/08_clean_output.t
 t/09_bin.t
 t/10_load_fatpacked.t
 t/_vimrc
-t/boilerplate.t
 t/Moosy/Class.pm
 t/Moosy/Parent.pm
 t/Moosy/Role1.pm
 t/Moosy/Role2.pm
 t/Moosy/Role3.pm
-t/pod.t
 t/session.vim
 t/Test.pm
 t/TodoTagger.pm

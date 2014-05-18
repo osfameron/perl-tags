@@ -11,7 +11,7 @@ use Perl::Tags;
 use Perl::Tags::Hybrid;
 use Perl::Tags::Naive::Moose; # includes ::Naive
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub run {
   my $class = shift;

@@ -151,14 +151,14 @@ CONTRIBUTIONS
 
     Please fork and make pull request. Maint bits available on request.
 
+    DMITRI
+        many patches for features and bugfixes
+
     wolverian
         ::PPI subclass
 
     Ian Tegebo
         patch to use File::Temp
-
-    DMITRI
-        patch to parse constant and label declarations
 
     drbean
         ::Naive::Moose, ::Naive::Spiffy and ::Naive::Lib subclasses
@@ -166,14 +166,15 @@ CONTRIBUTIONS
     Alias
         prodding me to make repo public
 
-    nothingmuch
-        ::PPI fixes
-
     tsee
         Command line interface, applying patches
 
+    nothingmuch
+    Andreas Koenig
+    ether
+
 AUTHOR and LICENSE
-        osfameron (2006-2009) - osfameron@cpan.org
+        osfameron (2006-2014) - osfameron@cpan.org
                                 and contributors, as above
 
     For support, try emailing me or grabbing me on irc #london.pm on

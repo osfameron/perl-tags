@@ -105,8 +105,10 @@ use Perl::Tags::Tag;
 use Data::Dumper;
 use File::Spec;
 
+our $VERSION = '0.31';
+$VERSION = eval $VERSION;
+
 use overload q("") => \&to_string;
-our $VERSION = 0.30;
 
 =head2 C<new>
 
@@ -365,6 +367,10 @@ Please fork and make pull request.  Maint bits available on request.
 
 =over 4
 
+=item DMITRI
+
+many patches for features and bugfixes
+
 =item wolverian
 
 ::PPI subclass
@@ -372,10 +378,6 @@ Please fork and make pull request.  Maint bits available on request.
 =item Ian Tegebo
 
 patch to use File::Temp
-
-=item DMITRI
-
-patch to parse constant and label declarations
 
 =item drbean
 
@@ -385,19 +387,21 @@ patch to parse constant and label declarations
 
 prodding me to make repo public
 
-=item nothingmuch
-
-::PPI fixes
-
 =item tsee
 
 Command line interface, applying patches
+
+=item nothingmuch
+
+=item Andreas Koenig
+
+=item ether
 
 =back
 
 =head1 AUTHOR and LICENSE
 
-    osfameron (2006-2009) - osfameron@cpan.org
+    osfameron (2006-2014) - osfameron@cpan.org
                             and contributors, as above
 
 For support, try emailing me or grabbing me on irc #london.pm on irc.perl.org
