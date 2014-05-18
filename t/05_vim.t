@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 use strict; use warnings;
 use Data::Dumper;
 
@@ -55,8 +54,6 @@ SKIP: {
 }
 
 __DATA__
-#!/usr/bin/perl
-
 # Test line here
 package Test;
 

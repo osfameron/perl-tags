@@ -24,6 +24,9 @@ use lib "$FindBin::Bin/../lib";
   -p/--ppi       use PPI parsing (Default: no)
   --prune        Glob patterns to prune. May be passed multiple times. 
                  (Default: .git, .svn)
+  --files/-L     Instead of input files or dirs specified after the options,
+                   read paths of the files to process from this file, one
+                   per line.  If '-' is specified, stdin is read.
 
 =cut
 

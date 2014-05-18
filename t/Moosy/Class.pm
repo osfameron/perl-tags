@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 package Moosy::Class;
 use Moose;
 

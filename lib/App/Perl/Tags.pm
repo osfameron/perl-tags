@@ -9,7 +9,6 @@ use File::Find::Rule;
 
 use Perl::Tags;
 use Perl::Tags::Hybrid;
-use Perl::Tags::PPI;
 use Perl::Tags::Naive::Moose; # includes ::Naive
 
 our $VERSION = '0.02';
@@ -19,6 +18,7 @@ sub run {
 
   my %options = (
     outfile => 'perltags',
+    files => undef,
     depth => 10,
     variables => 1,
     ppi => 0,
@@ -32,13 +32,21 @@ sub run {
     'help|h',
     'version|v',
     'outfile|o=s',
+    'files|L=s',
     'prune=s@',
     'depth|d=i',
-    'vars|variables!',
+    'variables|vars!',
     'ppi|p!',
   );
 
-  $class->usage() unless @ARGV;
+  if (defined $options{files}) {
+    # Do not descend into explicitly specified files.
+    $options{depth} = 1;
+  } else {
+    # If not files are specified via -files options, we expect some
+    # paths after all the options.
+    $class->usage() unless @ARGV
+  }
 
   $options{paths} = \@ARGV;
 
@@ -71,16 +79,27 @@ sub main {
     do_variables => $self->{variables},
   );
 
+  my @taggers = ( Perl::Tags::Naive::Moose->new( %args ) );
+  if ($self->{ppi}) {
+    require Perl::Tags::PPI;
+    push @taggers, Perl::Tags::PPI->new( %args );
+  }
 
-  my $ptag = Perl::Tags::Hybrid->new(
-    %args,
-    taggers => [
-      Perl::Tags::Naive::Moose->new( %args ),
-      $self->{ppi} ? Perl::Tags::PPI->new( %args ) : (),
-    ],
-  );
+  my $ptag = Perl::Tags::Hybrid->new( %args, taggers => \@taggers );
 
-  my @files = $self->get_files;
+  my @files = do {
+    if (defined $self->{files}) {
+      if ('-' eq $self->{files}) {
+        map { chomp; $_ } <STDIN>;
+      } else {
+        my $fh = IO::File->new($self->{files})
+          or die "cannot open $$self{files} for reading: $!";
+        map { chomp; $_ } <$fh>;
+      }
+    } else {
+      $self->get_files;
+    }
+  };
 
   $ptag->process(files => \@files);
   $ptag->output(outfile => $self->{outfile}); 

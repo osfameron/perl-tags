@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 package TodoTagger;
 
 # an example subclass
