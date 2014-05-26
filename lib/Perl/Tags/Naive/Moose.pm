@@ -3,7 +3,7 @@ package Perl::Tags::Naive::Moose;
 
 use parent 'Perl::Tags::Naive';
 
-our $VERSION = '0.02';
+our $VERSION = '0.32';
 
 =head2 C<get_parsers>
 

@@ -6,7 +6,7 @@ use base qw(Perl::Tags);
 
 use PPI;
 
-our $VERSION = '0.02';
+our $VERSION = '0.32';
 
 sub ppi_all {
     my ( $self, $file ) = @_;

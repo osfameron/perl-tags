@@ -9,14 +9,14 @@ use Capture::Tiny 'capture';
 
 subtest 'Command line ok' => sub {
     my ($stdout, $stderr, $exit) = capture {
-        system "$FindBin::Bin/../bin/perl-tags";
+        system $^X, "$FindBin::Bin/../bin/perl-tags";
     };
     ok ! $exit, 'command successful';
     like $stdout, qr/Usage: perl-tags <options>/, 'Usage displayed as expected';
     is $stderr, '', 'No stderr';
 
     ($stdout, $stderr, $exit) = capture {
-        system "$FindBin::Bin/../bin/perl-tags -v";
+        system $^X, "$FindBin::Bin/../bin/perl-tags", '-v';
     };
     ok ! $exit, 'command successful';
     is $stderr, '', 'No stderr';
@@ -56,8 +56,8 @@ for my $no_vars (qw(-no-vars --no-vars -no-variables --no-variables)) {
             our $xyzzy;
 MY_PM
         my ($stdout, $stderr, $exit) = capture {
-            system "$FindBin::Bin/../bin/perl-tags -o $tags_file $no_vars ".
-                   "$input_file";
+            system $^X, "$FindBin::Bin/../bin/perl-tags", 
+                '-o', $tags_file, $no_vars, $input_file;
         };
         ok ! $exit, 'command successful';
         is $stderr, '', 'No stdout';
@@ -81,8 +81,8 @@ MY_PM
         my $input_file = catfile($tmpdir, "list");
         IO::File->new($input_file, "w")->print($pm_file);
         my ($stdout, $stderr, $exit) = capture {
-            system "$FindBin::Bin/../bin/perl-tags -o $tags_file $files_opt ".
-                   "$input_file";
+            system $^X, "$FindBin::Bin/../bin/perl-tags",
+                '-o', $tags_file, $files_opt, $input_file;
         };
         ok ! $exit, 'command successful';
         is $stderr, '', 'No stdout';
@@ -102,7 +102,7 @@ for my $files_opt (qw(-L -files)) {
             our $xyzzy;
 MY_PM
         my ($stdout, $stderr, $exit) = capture {
-            system "echo $pm_file | $FindBin::Bin/../bin/perl-tags ".
+            system "echo $pm_file | $^X $FindBin::Bin/../bin/perl-tags ".
                    "-o $tags_file $files_opt -";
         };
         ok ! $exit, 'command successful';

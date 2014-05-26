@@ -1,5 +1,8 @@
 Revision history for Perl-Tags
 
+0.32    2014-05-26
+        Fix RT#95776 via SREZIC
+
 0.31    2014-05-18
         perl-tags: Added -files option. Fixed -no-vars (DMITRI)
         Bugfixes:

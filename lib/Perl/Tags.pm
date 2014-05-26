@@ -105,7 +105,7 @@ use Perl::Tags::Tag;
 use Data::Dumper;
 use File::Spec;
 
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 $VERSION = eval $VERSION;
 
 use overload q("") => \&to_string;

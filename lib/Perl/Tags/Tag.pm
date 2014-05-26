@@ -3,7 +3,7 @@ use strict; use warnings;
 
 use overload q("") => \&to_string;
 
-our $VERSION = '0.02';
+our $VERSION = '0.32';
 
 =head2 C<new>
 

@@ -3,7 +3,7 @@ package Perl::Tags::Naive;
 use strict; use warnings;
 use parent 'Perl::Tags';
 
-our $VERSION = '0.02';
+our $VERSION = '0.32';
 
 =head1 C<Perl::Tags::Naive>
 
